@@ -60,8 +60,8 @@
                   <strong th:text="'Pedido #' + ${pedidoActual.id}">Pedido #1</strong>
                   <div class="text-muted small">
                     <span th:text="${#temporals.format(pedidoActual.fechaHora, 'dd/MM/yyyy HH:mm')}">Fecha</span>
-                    <span th:if="${pedidoActual.metodoEntrega != null}" th:text="' Â· ' + ${pedidoActual.metodoEntrega}"></span>
-                    <span th:if="${pedidoActual.metodoPago != null}" th:text="' Â· ' + ${pedidoActual.metodoPago}"></span>
+                    <span th:if="${pedidoActual.metodoEntrega != null}" th:text="' · ' + ${pedidoActual.metodoEntrega}"></span>
+                    <span th:if="${pedidoActual.metodoPago != null}" th:text="' · ' + ${pedidoActual.metodoPago}"></span>
                   </div>
                 </div>
                 <strong class="text-danger" th:text="'S/ ' + ${#numbers.formatDecimal(pedidoActual.total, 1, 2)}">S/ 0.00</strong>
@@ -71,25 +71,25 @@
             <div th:if="${pedidoActual != null}" class="order-status">
               <div class="completed">
                 <i class="bi bi-check-circle-fill"></i>
-                <strong>Pedido recibido</strong>
-                <span>Registramos tu compra.</span>
+                <strong>Pedido registrado</strong>
+                <span>Recibimos tu pedido correctamente.</span>
               </div>
               <div th:classappend="${pedidoActual.estadoPago == 'PAGADO'} ? 'completed' : 'active'">
                 <i class="bi bi-credit-card-fill"></i>
                 <strong th:text="${pedidoActual.estadoPago == 'PAGADO'} ? 'Pago confirmado' : 'Pago pendiente'">Pago confirmado</strong>
                 <span th:text="${pedidoActual.estadoPago == 'PAGADO'} ? 'Tu pago fue validado.' : 'Estamos validando tu pago por Yape/Plin.'">Tu pago fue validado.</span>
               </div>
-              <div th:classappend="${pedidoActual.estado == 'EN_PROCESO'} ? 'active' : (${pedidoActual.estado == 'LISTO' || pedidoActual.estado == 'ENTREGADO'} ? 'completed' : '')">
+              <div th:classappend="${pedidoActual.estadoPago != 'PAGADO'} ? '' : (${pedidoActual.estado == 'EN_PROCESO'} ? 'active' : (${pedidoActual.estado == 'LISTO' || pedidoActual.estado == 'ENTREGADO'} ? 'completed' : ''))">
                 <i class="bi bi-fire"></i>
-                <strong>En proceso</strong>
-                <span>Tu pedido está registrado en el sistema.</span>
+                <strong>En preparación</strong>
+                <span>La cocina ya está preparando tu pedido.</span>
               </div>
-              <div th:classappend="${pedidoActual.estado == 'LISTO'} ? 'active' : (${pedidoActual.estado == 'ENTREGADO'} ? 'completed' : '')">
+              <div th:classappend="${pedidoActual.estadoPago != 'PAGADO'} ? '' : (${pedidoActual.estado == 'LISTO'} ? 'active' : (${pedidoActual.estado == 'ENTREGADO'} ? 'completed' : ''))">
                 <i class="bi bi-bag-check"></i>
                 <strong>Listo para entrega</strong>
                 <span>Te avisaremos cuando esté listo.</span>
               </div>
-              <div th:classappend="${pedidoActual.estado == 'ENTREGADO'} ? 'completed active' : ''">
+              <div th:classappend="${pedidoActual.estadoPago == 'PAGADO' && pedidoActual.estado == 'ENTREGADO'} ? 'completed active' : ''">
                 <i class="bi bi-house-check"></i>
                 <strong>Entregado</strong>
                 <span>Pedido finalizado.</span>
@@ -98,8 +98,8 @@
 
             <div th:if="${pedidoActual == null}" class="text-center py-4">
               <i class="bi bi-bag-x fs-1 text-muted"></i>
-              <h5 class="fw-bold mt-3">TodavÃ­a no tienes pedidos</h5>
-              <p class="text-muted mb-3">Cuando compres desde la carta, aquÃ­ verÃ¡s el estado real de tu pedido.</p>
+              <h5 class="fw-bold mt-3">Todavía no tienes pedidos</h5>
+              <p class="text-muted mb-3">Cuando compres desde la carta, aquí verás el estado real de tu pedido.</p>
               <a th:href="@{/carta}" class="btn btn-danger">Ver carta</a>
             </div>
           </div>
@@ -112,9 +112,6 @@
                 <p class="text-danger fw-bold text-uppercase small mb-1" style="letter-spacing:1px;">Compras</p>
                 <h3 class="fw-bold mb-0">Historial de pedidos</h3>
               </div>
-              <a th:href="@{/carta}" class="btn btn-danger btn-sm">
-                <i class="bi bi-arrow-repeat me-1"></i> Volver a pedir
-              </a>
             </div>
 
             <div th:if="${!#lists.isEmpty(ventas)}" class="table-responsive">
@@ -125,7 +122,6 @@
                     <th>Detalle</th>
                     <th>Estado</th>
                     <th class="text-end">Total</th>
-                    <th></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -138,7 +134,7 @@
                       </div>
                       <small class="text-muted">
                         <span th:text="${#temporals.format(venta.fechaHora, 'dd/MM/yyyy HH:mm')}">Fecha</span>
-                        <span th:if="${venta.metodoEntrega != null}" th:text="' Â· ' + ${venta.metodoEntrega}"></span>
+                        <span th:if="${venta.metodoEntrega != null}" th:text="' · ' + ${venta.metodoEntrega}"></span>
                       </small>
                     </td>
                     <td>
@@ -146,9 +142,6 @@
                       <small class="d-block text-muted" th:if="${venta.estadoPago != null}" th:text="${venta.estadoPago}">PAGADO</small>
                     </td>
                     <td class="text-end fw-bold text-danger" th:text="'S/ ' + ${#numbers.formatDecimal(venta.total, 1, 2)}">S/ 0.00</td>
-                    <td class="text-end">
-                      <a th:href="@{/carta}" class="btn btn-sm btn-outline-danger">Repetir</a>
-                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -157,7 +150,7 @@
             <div th:if="${#lists.isEmpty(ventas)}" class="text-center py-4">
               <i class="bi bi-receipt fs-1 text-muted"></i>
               <h5 class="fw-bold mt-3">Sin historial por ahora</h5>
-              <p class="text-muted mb-3">Tus compras reales aparecerÃ¡n aquÃ­ despuÃ©s de pagar un pedido.</p>
+              <p class="text-muted mb-3">Tus compras reales aparecerán aquí después de pagar un pedido.</p>
               <a th:href="@{/carta}" class="btn btn-danger btn-sm">Hacer mi primer pedido</a>
             </div>
           </div>
@@ -170,23 +163,17 @@
                 <p class="text-danger fw-bold text-uppercase small mb-1" style="letter-spacing:1px;">Delivery</p>
                 <h3 class="fw-bold mb-0">Direcciones guardadas</h3>
               </div>
-              <a th:href="@{/carta}" class="btn btn-outline-danger btn-sm">
-                <i class="bi bi-plus-circle me-1"></i> Agregar al comprar
-              </a>
             </div>
 
             <div th:if="${!#lists.isEmpty(direcciones)}" class="row g-3">
               <div class="col-md-6" th:each="direccion, iter : ${direcciones}">
                 <div class="address-card">
                   <div class="d-flex justify-content-between gap-2">
-                    <strong th:text="${iter.index == 0} ? 'DirecciÃ³n principal' : 'DirecciÃ³n guardada'">DirecciÃ³n</strong>
+                    <strong th:text="${iter.index == 0} ? 'Dirección principal' : 'Dirección guardada'">Dirección</strong>
                     <span th:if="${iter.index == 0}" class="badge bg-danger">Principal</span>
                   </div>
-                  <p class="text-muted mb-2" th:text="${direccion}">DirecciÃ³n</p>
+                  <p class="text-muted mb-2" th:text="${direccion}">Dirección</p>
                   <small class="text-muted">Registrada desde tus pedidos delivery.</small>
-                  <div class="d-flex gap-2 mt-3">
-                    <a th:href="@{/carta}" class="btn btn-sm btn-outline-danger">Usar en pedido</a>
-                  </div>
                 </div>
               </div>
             </div>
@@ -194,7 +181,7 @@
             <div th:if="${#lists.isEmpty(direcciones)}" class="text-center py-4">
               <i class="bi bi-geo-alt fs-1 text-muted"></i>
               <h5 class="fw-bold mt-3">No tienes direcciones guardadas</h5>
-              <p class="text-muted mb-3">Cuando hagas un pedido delivery, guardaremos aquÃ­ la direcciÃ³n usada.</p>
+              <p class="text-muted mb-3">Cuando hagas un pedido delivery, guardaremos aquí la dirección usada.</p>
               <a th:href="@{/carta}" class="btn btn-outline-danger btn-sm">Comprar con delivery</a>
             </div>
           </div>

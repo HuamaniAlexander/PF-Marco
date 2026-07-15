@@ -78,12 +78,20 @@ public class VentaService {
         Venta venta = ventaRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Pedido no encontrado"));
 
+        String nuevoEstado = estado == null ? venta.getEstado() : estado.trim().toUpperCase();
+        String nuevoEstadoPago = estadoPago == null ? venta.getEstadoPago() : estadoPago.trim().toUpperCase();
+
+        if (!"PAGADO".equals(nuevoEstadoPago)
+                && ("EN_PROCESO".equals(nuevoEstado) || "LISTO".equals(nuevoEstado) || "ENTREGADO".equals(nuevoEstado))) {
+            throw new IllegalArgumentException("Primero confirma el pago antes de avanzar el pedido");
+        }
+
         if (estado != null && !estado.isBlank()) {
-            venta.setEstado(estado.trim().toUpperCase());
+            venta.setEstado(nuevoEstado);
         }
 
         if (estadoPago != null && !estadoPago.isBlank()) {
-            venta.setEstadoPago(estadoPago.trim().toUpperCase());
+            venta.setEstadoPago(nuevoEstadoPago);
         }
 
         ventaRepository.save(venta);

@@ -206,6 +206,15 @@ a {
   color: #198754;
 }
 
+.order-status .completed {
+  border-color: rgba(25, 135, 84, .22);
+  background: rgba(25, 135, 84, .045);
+}
+
+.order-status .completed strong {
+  color: #198754;
+}
+
 .order-status .active {
   border-color: rgba(201, 0, 18, .2);
   background: rgba(201, 0, 18, .04);
@@ -832,7 +841,7 @@ a {
 .whatsapp-float {
   position: fixed;
   right: 22px;
-  bottom: 94px;
+  bottom: 24px;
   z-index: 9998;
   width: 58px;
   height: 58px;
@@ -1143,6 +1152,30 @@ a {
   border-radius: 18px;
   padding: 18px;
   box-shadow: 0 10px 24px rgba(0, 0, 0, .04);
+}
+
+.admin-clean-table {
+  border: 1px solid rgba(0, 0, 0, .06);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, .04);
+}
+
+.admin-clean-table table {
+  margin-bottom: 0;
+}
+
+.admin-clean-table thead th {
+  background: #fff;
+  color: #111;
+  font-weight: 800;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.admin-clean-table tbody td {
+  background: #fff;
+  border-color: #edf0f2;
+  color: #212529;
 }
 
 .ops-panel {
@@ -1666,7 +1699,7 @@ a {
 
   .whatsapp-float {
     right: 16px;
-    bottom: 84px;
+    bottom: 18px;
     width: 52px;
     height: 52px;
   }

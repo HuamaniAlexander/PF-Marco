@@ -148,8 +148,12 @@ public class AdminController {
             return "redirect:/";
         }
 
-        ventaService.actualizarEstado(id, ventaForm.getEstado(), ventaForm.getEstadoPago());
-        redirectAttrs.addFlashAttribute("mensajeAdmin", "Pedido actualizado correctamente.");
+        try {
+            ventaService.actualizarEstado(id, ventaForm.getEstado(), ventaForm.getEstadoPago());
+            redirectAttrs.addFlashAttribute("mensajeAdmin", "Pedido actualizado correctamente.");
+        } catch (IllegalArgumentException ex) {
+            redirectAttrs.addFlashAttribute("errorAdmin", ex.getMessage());
+        }
         return "redirect:/admin/dashboard#pedidos";
     }
 
