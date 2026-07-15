@@ -1,0 +1,7 @@
+.git
+.agents
+.codex
+backend/.git
+backend/target
+**/.DS_Store
+**/*.log

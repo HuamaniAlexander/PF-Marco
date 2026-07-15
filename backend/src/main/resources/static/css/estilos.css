@@ -1314,17 +1314,15 @@ a {
 }
 
 .admin-role-tabs .nav-link.active {
-  background: linear-gradient(135deg, var(--rojo), #8f030b);
+  background: var(--rojo);
   border-color: var(--rojo);
   color: #fff !important;
-  box-shadow: 0 10px 24px rgba(181, 4, 15, .22);
+  box-shadow: 0 8px 18px rgba(181, 4, 15, .18);
 }
 
 .tab-pane > .admin-section {
   border: 1px solid rgba(0, 0, 0, .05);
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, .98), rgba(255, 248, 243, .74)),
-    radial-gradient(circle at top right, rgba(181, 4, 15, .08), transparent 28%);
+  background: #fff;
 }
 
 .role-flow > div {
@@ -1427,7 +1425,7 @@ a {
 .ops-panel {
   position: relative;
   overflow: hidden;
-  background: linear-gradient(180deg, #fff, #fff8f3);
+  background: #fff;
 }
 
 .ops-panel::before {
@@ -1435,7 +1433,7 @@ a {
   position: absolute;
   inset: 0 0 auto;
   height: 5px;
-  background: linear-gradient(90deg, var(--rojo), #ffc107);
+  background: var(--rojo);
 }
 
 .ops-panel h4 {
@@ -1482,7 +1480,7 @@ a {
 
 .kitchen-column {
   min-height: 430px;
-  background: linear-gradient(180deg, #fff, #fff8f3);
+  background: #fff;
 }
 
 .kitchen-column h4 {
@@ -1520,7 +1518,7 @@ a {
 
 #rol-cajero .admin-stat-card {
   min-height: 110px;
-  background: linear-gradient(180deg, #fff, #fff8f3);
+  background: #fff;
 }
 
 @media (min-width: 992px) {
