@@ -82,8 +82,7 @@ function datosPagoPagina() {
     cvv: valor('pageCvv'),
     nombreTarjeta: valor('pageNombreTarjeta'),
     numeroOperacion: valor('pageNumeroOperacion'),
-    numeroYapePlin: valor('pageNumeroYapePlin'),
-    codigoAprobacion: valor('pageCodigoAprobacion')
+    numeroYapePlin: valor('pageNumeroYapePlin')
   };
 }
 

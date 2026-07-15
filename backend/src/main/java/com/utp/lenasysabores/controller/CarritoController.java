@@ -142,7 +142,7 @@ public class CarritoController {
             session.setAttribute("carrito", new ArrayList<>());
 
             return ResponseEntity.ok(Map.of(
-                    "mensaje", "Pago aprobado y pedido confirmado",
+                    "mensaje", "Pedido confirmado",
                     "ventaId", venta.getId(),
                     "total", venta.getTotal(),
                     "estadoPago", venta.getEstadoPago(),

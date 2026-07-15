@@ -18,5 +18,4 @@ public class PagoRequest {
     private String nombreTarjeta;
     private String numeroOperacion;
     private String numeroYapePlin;
-    private String codigoAprobacion;
 }

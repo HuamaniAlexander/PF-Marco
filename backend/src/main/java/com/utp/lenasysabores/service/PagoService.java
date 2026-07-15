@@ -37,7 +37,7 @@ public class PagoService {
             validarOperacionDigital(pagoRequest);
             return new PagoResultado(
                     metodoPago,
-                    "PAGADO",
+                    "PENDIENTE",
                     "YP-" + limpiar(pagoRequest.getNumeroOperacion()),
                     null,
                     normalizar(pagoRequest.getMetodoEntrega()),
@@ -95,16 +95,12 @@ public class PagoService {
 
     private void validarOperacionDigital(PagoRequest pagoRequest) {
         String numeroYapePlin = limpiar(pagoRequest.getNumeroYapePlin()).replaceAll("\\s+", "");
-        String codigoAprobacion = limpiar(pagoRequest.getCodigoAprobacion());
         String numeroOperacion = limpiar(pagoRequest.getNumeroOperacion());
         if (!numeroYapePlin.matches("9\\d{8}")) {
             throw new IllegalArgumentException("Ingresa el numero de celular Yape/Plin valido");
         }
         if (!numeroOperacion.matches("\\d{6,12}")) {
             throw new IllegalArgumentException("Ingresa un numero de operacion Yape/Plin valido");
-        }
-        if (!codigoAprobacion.matches("[A-Za-z0-9]{4,12}")) {
-            throw new IllegalArgumentException("Ingresa el codigo de aprobacion de Yape/Plin");
         }
     }
 

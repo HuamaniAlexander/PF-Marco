@@ -63,15 +63,15 @@
 
       <div class="dropdown-divider my-2"></div>
 
-      <a th:if="${session.usuarioRol == 'ADMIN'}" class="dropdown-item user-dropdown-item" th:href="@{/productos/nuevo}">
-        <span class="dropdown-icon bg-danger-subtle text-danger"><i class="bi bi-box-seam"></i></span>
+      <a th:if="${session.usuarioRol == 'ADMIN'}" class="dropdown-item user-dropdown-item" th:href="@{/admin/dashboard}">
+        <span class="dropdown-icon bg-danger-subtle text-danger"><i class="bi bi-speedometer2"></i></span>
         <span>
-          <strong>Agregar producto</strong>
-          <small>Administrar carta</small>
+          <strong>Dashboard</strong>
+          <small>Gestionar sistema</small>
         </span>
       </a>
 
-      <a th:if="${session.usuarioRol != 'ADMIN'}" class="dropdown-item user-dropdown-item" th:href="@{/perfil}">
+      <a class="dropdown-item user-dropdown-item" th:href="@{/perfil}">
         <span class="dropdown-icon bg-danger-subtle text-danger"><i class="bi bi-person-lines-fill"></i></span>
         <span>
           <strong>Mi perfil</strong>
@@ -175,7 +175,7 @@
     <i class="bi bi-whatsapp"></i>
   </a>
 
-  <div class="chatbot-widget" id="chatbotWidget">
+  <div class="chatbot-widget d-none" id="chatbotWidget">
     <button class="chatbot-toggle" id="chatbotToggle" type="button" aria-label="Abrir chatbot">
       <i class="bi bi-chat-dots-fill"></i>
     </button>

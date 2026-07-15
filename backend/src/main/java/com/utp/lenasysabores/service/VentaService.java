@@ -73,4 +73,23 @@ public class VentaService {
     public List<Venta> listarTodas() {
         return ventaRepository.findAll();
     }
+
+    public void actualizarEstado(Integer id, String estado, String estadoPago) {
+        Venta venta = ventaRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Pedido no encontrado"));
+
+        if (estado != null && !estado.isBlank()) {
+            venta.setEstado(estado.trim().toUpperCase());
+        }
+
+        if (estadoPago != null && !estadoPago.isBlank()) {
+            venta.setEstadoPago(estadoPago.trim().toUpperCase());
+        }
+
+        ventaRepository.save(venta);
+    }
+
+    public void eliminar(Integer id) {
+        ventaRepository.deleteById(id);
+    }
 }

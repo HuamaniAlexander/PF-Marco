@@ -13,8 +13,8 @@
           <span class="badge bg-warning text-dark rounded-pill px-3 py-2 mb-3">
             <i class="bi bi-speedometer2"></i> Administración
           </span>
-          <h1 class="display-5 fw-bold text-white mb-2">Panel administrativo</h1>
-          <p class="text-white-50 fs-5 mb-0">Gestiona productos, reservas, ventas y reportes del negocio.</p>
+          <h1 class="display-5 fw-bold text-white mb-2">Dashboard administrativo</h1>
+          <p class="text-white-50 fs-5 mb-0">Gestiona productos, reservas y pedidos desde secciones separadas.</p>
         </div>
         <div class="col-lg-4 text-lg-end">
           <a th:href="@{/carta}" class="btn btn-light fw-semibold">
@@ -44,7 +44,7 @@
       <div class="col-12 col-md-6 col-xl-3">
         <div class="admin-stat-card">
           <div class="admin-stat-icon bg-success-subtle text-success"><i class="bi bi-receipt"></i></div>
-          <div><span>Ventas</span><strong th:text="${totalVentas}">0</strong></div>
+          <div><span>Pedidos</span><strong th:text="${totalVentas}">0</strong></div>
         </div>
       </div>
       <div class="col-12 col-md-6 col-xl-3">
@@ -60,10 +60,8 @@
         <div class="admin-sidebar rounded-4 shadow-sm p-3 sticky-lg-top">
           <a href="#resumen" class="admin-nav-link"><i class="bi bi-speedometer2 me-2"></i>Resumen</a>
           <a href="#productos" class="admin-nav-link"><i class="bi bi-box-seam me-2"></i>Productos</a>
-          <a href="#inventario" class="admin-nav-link"><i class="bi bi-list-check me-2"></i>Inventario</a>
-          <a href="#reservas" class="admin-nav-link"><i class="bi bi-calendar-check me-2"></i>Reservas</a>
-          <a href="#ventas" class="admin-nav-link"><i class="bi bi-receipt me-2"></i>Ventas</a>
-          <a href="#admin-extra" class="admin-nav-link"><i class="bi bi-sliders me-2"></i>Control</a>
+          <a href="#reservas" class="admin-nav-link"><i class="bi bi-calendar-check me-2"></i>Ver reservas</a>
+          <a href="#pedidos" class="admin-nav-link"><i class="bi bi-receipt me-2"></i>Pedidos</a>
         </div>
       </aside>
 
@@ -71,16 +69,16 @@
         <section id="productos" class="admin-section mb-4">
           <div class="admin-section-header">
             <div>
-              <span class="text-danger fw-semibold">Catálogo</span>
-              <h2 th:text="${esEditar} ? 'Editar producto' : 'Nuevo producto'">Nuevo producto</h2>
+              <span class="text-danger fw-semibold">Productos</span>
+              <h2 th:text="${esEditar} ? 'Editar producto' : 'Agregar producto'">Agregar producto</h2>
             </div>
             <a th:href="@{/admin/productos/nuevo}" class="btn btn-outline-danger btn-sm">
-              <i class="bi bi-plus-circle me-1"></i> Limpiar formulario
+              <i class="bi bi-plus-circle me-1"></i> Nuevo producto
             </a>
           </div>
 
           <form th:action="${esEditar} ? @{/admin/productos/editar} : @{/admin/productos/nuevo}"
-                th:object="${producto}" method="post" class="row g-3">
+                th:object="${producto}" method="post" class="row g-3 mb-4">
             <input type="hidden" th:field="*{id}">
             <div class="col-md-6">
               <label class="form-label fw-semibold">Nombre</label>
@@ -116,15 +114,12 @@
               <a th:href="@{/admin/dashboard#productos}" class="btn btn-outline-secondary">Cancelar</a>
             </div>
           </form>
-        </section>
 
-        <section id="inventario" class="admin-section mb-4">
-          <div class="admin-section-header">
-            <div><span class="text-danger fw-semibold">Inventario</span><h2>Productos registrados</h2></div>
-          </div>
           <div class="table-responsive">
             <table class="table table-hover align-middle mb-0">
-              <thead><tr><th>Producto</th><th>Categoría</th><th>Precio</th><th class="text-end">Acciones</th></tr></thead>
+              <thead>
+                <tr><th>Producto</th><th>Categoría</th><th>Precio</th><th class="text-end">Acciones</th></tr>
+              </thead>
               <tbody>
                 <tr th:each="p : ${productos}">
                   <td>
@@ -139,12 +134,12 @@
                   <td><span class="badge bg-light text-danger border" th:text="${p.categoria}">Categoría</span></td>
                   <td class="fw-semibold" th:text="'S/ ' + ${#numbers.formatDecimal(p.precio, 1, 2)}">S/ 0.00</td>
                   <td class="text-end">
-                    <a th:href="@{/admin/productos/editar/{id}(id=${p.id})}" class="btn btn-sm btn-outline-warning">
-                      <i class="bi bi-pencil-square"></i>
+                    <a th:href="@{/admin/productos/editar/{id}(id=${p.id})}" class="btn btn-sm btn-outline-warning mb-1">
+                      <i class="bi bi-pencil-square me-1"></i> Editar
                     </a>
                     <form th:action="@{/admin/productos/eliminar/{id}(id=${p.id})}" method="post" class="d-inline">
-                      <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('¿Eliminar este producto?')">
-                        <i class="bi bi-trash"></i>
+                      <button type="submit" class="btn btn-sm btn-outline-danger mb-1" onclick="return confirm('¿Eliminar este producto?')">
+                        <i class="bi bi-trash me-1"></i> Eliminar
                       </button>
                     </form>
                   </td>
@@ -159,64 +154,122 @@
 
         <section id="reservas" class="admin-section mb-4">
           <div class="admin-section-header">
-            <div><span class="text-danger fw-semibold">Atención</span><h2>Reservas</h2></div>
+            <div><span class="text-danger fw-semibold">Reservas</span><h2>Ver, editar o cancelar reservas</h2></div>
+          </div>
+
+          <div class="row g-3" th:if="${!#lists.isEmpty(reservas)}">
+            <div class="col-12" th:each="r : ${reservas}">
+              <div class="admin-edit-card">
+                <form th:action="@{/admin/reservas/editar/{id}(id=${r.id})}" method="post" class="row g-3 align-items-end">
+                  <div class="col-md-3">
+                    <label class="form-label small fw-bold">Cliente</label>
+                    <input class="form-control" name="nombre" th:value="${r.nombre}" required>
+                  </div>
+                  <div class="col-md-3">
+                    <label class="form-label small fw-bold">Correo</label>
+                    <input class="form-control" type="email" name="correo" th:value="${r.correo}" required>
+                  </div>
+                  <div class="col-md-2">
+                    <label class="form-label small fw-bold">Teléfono</label>
+                    <input class="form-control" name="telefono" th:value="${r.telefono}" required>
+                  </div>
+                  <div class="col-md-2">
+                    <label class="form-label small fw-bold">Fecha</label>
+                    <input class="form-control" type="date" name="fecha" th:value="${r.fecha}" required>
+                  </div>
+                  <div class="col-md-1">
+                    <label class="form-label small fw-bold">Hora</label>
+                    <input class="form-control" name="hora" th:value="${r.hora}" required>
+                  </div>
+                  <div class="col-md-1">
+                    <label class="form-label small fw-bold">Pers.</label>
+                    <input class="form-control" type="number" min="1" max="20" name="personas" th:value="${r.personas}" required>
+                  </div>
+                  <div class="col-md-8">
+                    <label class="form-label small fw-bold">Motivo</label>
+                    <input class="form-control" name="motivo" th:value="${r.motivo}" placeholder="Motivo de reserva">
+                    <input type="hidden" name="comentario" th:value="${r.comentario}">
+                  </div>
+                  <div class="col-md-4 d-flex gap-2 justify-content-md-end">
+                    <button type="submit" class="btn btn-sm btn-outline-warning fw-semibold">
+                      <i class="bi bi-pencil-square me-1"></i> Editar
+                    </button>
+                    <button type="submit" class="btn btn-sm btn-outline-danger fw-semibold"
+                            th:formaction="@{/admin/reservas/eliminar/{id}(id=${r.id})}"
+                            onclick="return confirm('¿Cancelar/eliminar esta reserva?')">
+                      <i class="bi bi-x-circle me-1"></i> Cancelar
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <div th:if="${#lists.isEmpty(reservas)}" class="text-center text-muted py-4">
+            Aún no hay reservas registradas.
+          </div>
+        </section>
+
+        <section id="pedidos" class="admin-section mb-4">
+          <div class="admin-section-header">
+            <div><span class="text-danger fw-semibold">Pedidos</span><h2>Editar estado de pedidos</h2></div>
           </div>
           <div class="table-responsive">
             <table class="table table-hover align-middle mb-0">
-              <thead><tr><th>Cliente</th><th>Fecha</th><th>Personas</th><th>Contacto</th><th class="text-end">Acciones</th></tr></thead>
+              <thead>
+                <tr><th>Pedido</th><th>Cliente</th><th>Pago</th><th>Estado</th><th class="text-end">Acciones</th></tr>
+              </thead>
               <tbody>
-                <tr th:each="r : ${reservas}">
-                  <td><div class="fw-bold" th:text="${r.nombre}">Cliente</div><small class="text-muted" th:text="${r.motivo}">Motivo</small></td>
-                  <td><span th:text="${#temporals.format(r.fecha, 'dd/MM/yyyy')}">01/01/2026</span><small class="d-block text-muted" th:text="${r.hora}">1:00pm</small></td>
-                  <td th:text="${r.personas}">2</td>
-                  <td><span th:text="${r.correo}">correo</span><small class="d-block text-muted" th:text="${r.telefono}">teléfono</small></td>
+                <tr th:each="v : ${ventas}">
+                  <td>
+                    <div class="fw-bold" th:text="'#' + ${v.id}">#1</div>
+                    <small class="text-muted" th:text="${#temporals.format(v.fechaHora, 'dd/MM/yyyy HH:mm')}">fecha</small>
+                  </td>
+                  <td>
+                    <span th:text="${v.usuarioNombre}">Cliente</span>
+                    <small class="d-block text-muted" th:text="${v.usuarioCorreo}">correo</small>
+                    <strong class="d-block text-danger" th:text="'S/ ' + ${#numbers.formatDecimal(v.total, 1, 2)}">S/ 0.00</strong>
+                  </td>
+                  <td>
+                    <span class="badge border"
+                          th:classappend="${v.estadoPago == 'PAGADO'} ? ' bg-success-subtle text-success' : ' bg-warning-subtle text-warning'"
+                          th:text="${v.estadoPago ?: 'PENDIENTE'}">PAGADO</span>
+                    <small class="d-block text-muted" th:text="${v.metodoPago ?: 'Sin método'}">Método</small>
+                    <small class="d-block text-muted" th:text="${v.codigoTransaccion ?: 'Sin código'}">Código</small>
+                  </td>
+                  <td>
+                    <select class="form-select form-select-sm mb-2" th:id="'estado-' + ${v.id}">
+                      <option value="CONFIRMADO" th:selected="${v.estado == 'CONFIRMADO'}">Confirmado</option>
+                      <option value="EN_PROCESO" th:selected="${v.estado == 'EN_PROCESO'}">En proceso</option>
+                      <option value="LISTO" th:selected="${v.estado == 'LISTO'}">Listo para entrega</option>
+                      <option value="ENTREGADO" th:selected="${v.estado == 'ENTREGADO'}">Entregado</option>
+                      <option value="CANCELADO" th:selected="${v.estado == 'CANCELADO'}">Cancelado</option>
+                    </select>
+                    <select class="form-select form-select-sm" th:id="'pago-' + ${v.id}">
+                      <option value="PENDIENTE" th:selected="${v.estadoPago == 'PENDIENTE'}">Pago pendiente</option>
+                      <option value="PAGADO" th:selected="${v.estadoPago == 'PAGADO'}">Pagado</option>
+                    </select>
+                  </td>
                   <td class="text-end">
-                    <form th:action="@{/admin/reservas/eliminar/{id}(id=${r.id})}" method="post" class="d-inline">
-                      <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('¿Eliminar esta reserva?')">
-                        <i class="bi bi-trash"></i>
+                    <form th:action="@{/admin/pedidos/estado/{id}(id=${v.id})}" method="post" class="d-inline">
+                      <input type="hidden" name="estado" th:id="'estadoInput-' + ${v.id}">
+                      <input type="hidden" name="estadoPago" th:id="'pagoInput-' + ${v.id}">
+                      <button type="submit" class="btn btn-sm btn-outline-warning mb-1"
+                              onclick="const row=this.closest('tr'); this.form.estado.value=row.querySelector('[id^=estado-]').value; this.form.estadoPago.value=row.querySelector('[id^=pago-]').value;">
+                        <i class="bi bi-pencil-square me-1"></i> Editar
+                      </button>
+                    </form>
+                    <form th:action="@{/admin/pedidos/eliminar/{id}(id=${v.id})}" method="post" class="d-inline">
+                      <button type="submit" class="btn btn-sm btn-outline-danger mb-1" onclick="return confirm('¿Eliminar este pedido?')">
+                        <i class="bi bi-trash me-1"></i> Eliminar
                       </button>
                     </form>
                   </td>
                 </tr>
-                <tr th:if="${#lists.isEmpty(reservas)}">
-                  <td colspan="5" class="text-center text-muted py-4">Aún no hay reservas registradas.</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </section>
-
-        <section id="ventas" class="admin-section mb-4">
-          <div class="admin-section-header">
-            <div><span class="text-danger fw-semibold">Pedidos</span><h2>Ventas y pagos</h2></div>
-          </div>
-          <div class="table-responsive">
-            <table class="table table-hover align-middle mb-0">
-              <thead><tr><th>Pedido</th><th>Cliente</th><th>Pago</th><th>Entrega</th><th class="text-end">Total</th></tr></thead>
-              <tbody>
-                <tr th:each="v : ${ventas}">
-                  <td><div class="fw-bold" th:text="'#' + ${v.id}">#1</div><small class="text-muted" th:text="${#temporals.format(v.fechaHora, 'dd/MM/yyyy HH:mm')}">fecha</small></td>
-                  <td><span th:text="${v.usuarioNombre}">Cliente</span><small class="d-block text-muted" th:text="${v.usuarioCorreo}">correo</small></td>
-                  <td><span class="badge bg-success-subtle text-success border" th:text="${v.estadoPago ?: 'PENDIENTE'}">PAGADO</span><small class="d-block text-muted" th:text="${v.codigoTransaccion ?: 'Sin código'}">Código</small></td>
-                  <td><span th:text="${v.metodoEntrega ?: 'No definido'}">Delivery</span><small class="d-block text-muted" th:text="${v.direccionEntrega ?: 'Recojo en local'}">Dirección</small></td>
-                  <td class="text-end fw-bold text-danger" th:text="'S/ ' + ${#numbers.formatDecimal(v.total, 1, 2)}">S/ 0.00</td>
-                </tr>
                 <tr th:if="${#lists.isEmpty(ventas)}">
-                  <td colspan="5" class="text-center text-muted py-4">Aún no hay ventas registradas.</td>
+                  <td colspan="5" class="text-center text-muted py-4">Aún no hay pedidos registrados.</td>
                 </tr>
               </tbody>
             </table>
-          </div>
-        </section>
-
-        <section id="admin-extra" class="admin-section">
-          <div class="admin-section-header">
-            <div><span class="text-danger fw-semibold">Control del sistema</span><h2>Administrador</h2></div>
-          </div>
-          <div class="row g-3">
-            <div class="col-md-4"><div class="role-card"><i class="bi bi-tags"></i><h4>Catálogo</h4><p>Gestionar productos, categorías y precios.</p></div></div>
-            <div class="col-md-4"><div class="role-card"><i class="bi bi-calendar-check"></i><h4>Reservas</h4><p>Revisar y eliminar reservas registradas.</p></div></div>
-            <div class="col-md-4"><div class="role-card"><i class="bi bi-bar-chart"></i><h4>Reportes</h4><p>Consultar ventas e ingresos pagados.</p></div></div>
           </div>
         </section>
       </div>

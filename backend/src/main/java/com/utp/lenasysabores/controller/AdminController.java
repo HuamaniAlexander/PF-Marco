@@ -1,6 +1,8 @@
 package com.utp.lenasysabores.controller;
 
 import com.utp.lenasysabores.model.Producto;
+import com.utp.lenasysabores.model.Reserva;
+import com.utp.lenasysabores.model.Venta;
 import com.utp.lenasysabores.service.CatalogoService;
 import com.utp.lenasysabores.service.ReservaService;
 import com.utp.lenasysabores.service.VentaService;
@@ -36,7 +38,12 @@ public class AdminController {
             return "redirect:/";
         }
 
-        return "redirect:/productos/nuevo";
+        cargarDatosDashboard(model);
+        if (!model.containsAttribute("producto")) {
+            model.addAttribute("producto", new Producto());
+            model.addAttribute("esEditar", false);
+        }
+        return "admin/dashboard";
     }
 
     @GetMapping("/productos/nuevo")
@@ -45,7 +52,10 @@ public class AdminController {
             return "redirect:/";
         }
 
-        return "redirect:/productos/nuevo";
+        cargarDatosDashboard(model);
+        model.addAttribute("producto", new Producto());
+        model.addAttribute("esEditar", false);
+        return "admin/dashboard";
     }
 
     @PostMapping("/productos/nuevo")
@@ -69,7 +79,10 @@ public class AdminController {
             return "redirect:/";
         }
 
-        return "redirect:/productos/editar/" + id;
+        cargarDatosDashboard(model);
+        model.addAttribute("producto", catalogoService.obtenerProductoPorId(id));
+        model.addAttribute("esEditar", true);
+        return "admin/dashboard";
     }
 
     @PostMapping("/productos/editar")
@@ -109,6 +122,48 @@ public class AdminController {
         reservaService.eliminar(id);
         redirectAttrs.addFlashAttribute("mensajeAdmin", "Reserva eliminada correctamente.");
         return "redirect:/admin/dashboard#reservas";
+    }
+
+    @PostMapping("/reservas/editar/{id}")
+    public String editarReserva(@PathVariable Integer id,
+                                @ModelAttribute Reserva reserva,
+                                HttpSession session,
+                                RedirectAttributes redirectAttrs) {
+        if (!esAdmin(session)) {
+            return "redirect:/";
+        }
+
+        reserva.setId(id);
+        reservaService.registrar(reserva);
+        redirectAttrs.addFlashAttribute("mensajeAdmin", "Reserva actualizada correctamente.");
+        return "redirect:/admin/dashboard#reservas";
+    }
+
+    @PostMapping("/pedidos/estado/{id}")
+    public String actualizarPedido(@PathVariable Integer id,
+                                   @ModelAttribute Venta ventaForm,
+                                   HttpSession session,
+                                   RedirectAttributes redirectAttrs) {
+        if (!esAdmin(session)) {
+            return "redirect:/";
+        }
+
+        ventaService.actualizarEstado(id, ventaForm.getEstado(), ventaForm.getEstadoPago());
+        redirectAttrs.addFlashAttribute("mensajeAdmin", "Pedido actualizado correctamente.");
+        return "redirect:/admin/dashboard#pedidos";
+    }
+
+    @PostMapping("/pedidos/eliminar/{id}")
+    public String eliminarPedido(@PathVariable Integer id,
+                                 HttpSession session,
+                                 RedirectAttributes redirectAttrs) {
+        if (!esAdmin(session)) {
+            return "redirect:/";
+        }
+
+        ventaService.eliminar(id);
+        redirectAttrs.addFlashAttribute("mensajeAdmin", "Pedido eliminado correctamente.");
+        return "redirect:/admin/dashboard#pedidos";
     }
 
     private void cargarDatosDashboard(Model model) {
