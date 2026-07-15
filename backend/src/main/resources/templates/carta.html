@@ -12,9 +12,9 @@
       <span class="badge bg-warning text-dark rounded-pill px-3 py-2 mb-3 d-inline-block">
         <i class="bi bi-menu-button-wide"></i> Nuestra carta
       </span>
-      <h1 class="display-4 fw-bold text-white mb-3">Carta de pollerÃ­a y parrillas</h1>
+      <h1 class="display-4 fw-bold text-white mb-3">Carta de pollería y parrillas</h1>
       <p class="text-white-50 fs-5 mx-auto" style="max-width:560px;">
-        Elige tu pollo a la leÃ±a, parrilla, promociÃ³n familiar o bebida favorita. La brasa manda.
+        Elige tu pollo a la leña, parrilla, promoción familiar o bebida favorita. La brasa manda.
       </p>
     </div>
   </section>
@@ -23,9 +23,9 @@
     <div class="container">
       <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-end gap-3 mb-4">
         <div>
-          <p class="text-danger fw-bold text-uppercase small mb-1" style="letter-spacing:1px;">Pide en lÃ­nea</p>
+          <p class="text-danger fw-bold text-uppercase small mb-1" style="letter-spacing:1px;">Pide en línea</p>
           <h2 class="fw-bold mb-1">Elige tu antojo</h2>
-          <p class="text-muted mb-0">Filtra por categorÃ­a y agrega al carrito en segundos.</p>
+          <p class="text-muted mb-0">Filtra por categoría y agrega al carrito en segundos.</p>
         </div>
         <div class="menu-filters d-flex flex-wrap gap-2">
           <button type="button" class="btn btn-danger btn-sm active" data-filter="TODOS">Todos</button>
@@ -40,7 +40,7 @@
           <div class="card border-0 shadow-sm rounded-4 overflow-hidden h-100 product-menu-card">
             <div class="position-relative">
             <img th:src="${producto.imagenUrl}" class="card-img-top product-img" th:alt="${producto.nombre}" />
-              <span class="badge bg-warning text-dark position-absolute top-0 start-0 m-3" th:if="${iter.index < 3}">MÃ¡s pedido</span>
+              <span class="badge bg-warning text-dark position-absolute top-0 start-0 m-3" th:if="${iter.index < 3}">Más pedido</span>
             </div>
             <div class="card-body p-4 product-card-body">
               <span class="badge bg-light text-danger border mb-2" th:text="${producto.categoria}">Categoria</span>
@@ -48,14 +48,14 @@
               <p class="text-muted" th:text="${producto.descripcion}">Descripcion</p>
               <div class="small text-muted mb-3">
                 <i class="bi bi-fire text-danger me-1"></i> Preparado a la brasa
-                <span class="mx-1">Â·</span>
+                <span class="mx-1">·</span>
                 <i class="bi bi-clock text-danger me-1"></i> Listo para pedir
               </div>
               <div class="d-flex justify-content-between align-items-center mt-auto">
                 <span class="fs-4 fw-bold text-danger"
                   th:text="'S/ ' + ${#numbers.formatDecimal(producto.precio, 1, 2)}">S/ 0.00</span>
 
-                <!-- BotÃ³n con th:data-id para pasar el ID al JS -->
+                <!-- Botón con th:data-id para pasar el ID al JS -->
                 <button class="btn btn-danger btn-sm add-cart" th:data-id="${producto.id}"
                   th:data-nombre="${producto.nombre}" th:data-sesion="${session.usuarioId != null}">
                   <i class="bi bi-bag-plus"></i> Agregar
@@ -68,7 +68,7 @@
                 </a>
                 <form th:action="@{/productos/eliminar/{id}(id=${producto.id})}" method="post">
                   <button type="submit" class="btn btn-sm btn-outline-danger"
-                    onclick="return confirm('Â¿Seguro que quieres eliminar este producto?')">
+                    onclick="return confirm('¿Seguro que quieres eliminar este producto?')">
                     <i class="bi bi-trash"></i> Eliminar
                   </button>
                 </form>
@@ -81,7 +81,7 @@
     </div>
   </section>
 
-  <!-- â”€â”€ PANEL CARRITO (offcanvas lateral) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+  <!-- Panel carrito lateral -->
   <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasCarrito">
     <div class="offcanvas-header border-bottom">
       <h5 class="offcanvas-title fw-bold">
@@ -93,7 +93,7 @@
 
       <!-- Lista de items -->
       <div id="carrito-items" class="flex-grow-1">
-        <p class="text-muted text-center mt-4">Tu carrito estÃ¡ vacÃ­o</p>
+        <p class="text-muted text-center mt-4">Tu carrito está vacío</p>
       </div>
 
       <div class="checkout-steps small text-muted mb-3">
@@ -102,7 +102,7 @@
         <span><i class="bi bi-credit-card"></i> Pago</span>
       </div>
 
-      <!-- Total y botÃ³n confirmar -->
+      <!-- Total y botón confirmar -->
       <div class="border-top pt-3 mt-3" id="carrito-footer" style="display:none!important;">
         <div class="d-flex justify-content-between fw-bold fs-5 mb-3">
           <span>Total:</span>
@@ -112,7 +112,7 @@
           <i class="bi bi-lock-fill me-2"></i>Pagar pedido
         </button>
         <div class="small text-center text-muted mt-2">
-          <i class="bi bi-shield-check me-1"></i>Pago seguro Â· Delivery o recojo en local
+          <i class="bi bi-shield-check me-1"></i>Pago seguro · Delivery o recojo en local
         </div>
         <button class="btn btn-outline-secondary w-100 mt-2" onclick="vaciarCarrito()">
           Vaciar carrito
@@ -133,7 +133,7 @@
             <div>
               <p class="text-danger fw-bold text-uppercase small mb-1" style="letter-spacing:1px;">Checkout seguro</p>
               <h4 class="modal-title fw-bold mb-0">Finaliza tu pedido</h4>
-              <p class="text-muted mb-0">Elige entrega, mÃ©todo de pago y confirma tu compra.</p>
+              <p class="text-muted mb-0">Elige entrega, método de pago y confirma tu compra.</p>
             </div>
           </div>
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
@@ -153,7 +153,7 @@
                   <div class="checkout-section-title">
                     <span>1</span>
                     <div>
-                      <h5>MÃ©todo de entrega</h5>
+                      <h5>Método de entrega</h5>
                       <p>Recibe tu pedido o pasa por tienda.</p>
                     </div>
                   </div>
@@ -164,7 +164,7 @@
                       <label class="checkout-option-card" for="entregaDelivery">
                         <i class="bi bi-scooter"></i>
                         <strong>Delivery</strong>
-                        <small>Lo llevamos a tu direcciÃ³n.</small>
+                        <small>Lo llevamos a tu dirección.</small>
                       </label>
                     </div>
                     <div class="col-md-6">
@@ -172,13 +172,13 @@
                       <label class="checkout-option-card" for="entregaRecojo">
                         <i class="bi bi-shop"></i>
                         <strong>Recojo en local</strong>
-                        <small>Te avisamos cuando estÃ© listo.</small>
+                        <small>Te avisamos cuando está listo.</small>
                       </label>
                     </div>
                   </div>
 
                   <div class="mt-3" id="grupoDireccion">
-                    <label for="direccionEntrega" class="form-label fw-semibold">DirecciÃ³n de entrega</label>
+                    <label for="direccionEntrega" class="form-label fw-semibold">Dirección de entrega</label>
                     <div class="input-icon-group">
                       <i class="bi bi-geo-alt"></i>
                       <input type="text" class="form-control form-control-lg" id="direccionEntrega"
@@ -191,7 +191,7 @@
                   <div class="checkout-section-title">
                     <span>2</span>
                     <div>
-                      <h5>MÃ©todo de pago</h5>
+                      <h5>Método de pago</h5>
                       <p>Pago con tarjeta, Yape o Plin.</p>
                     </div>
                   </div>
@@ -211,7 +211,7 @@
 
                   <div id="camposTarjeta" class="row g-3">
                     <div class="col-12">
-                      <label for="numeroTarjeta" class="form-label fw-semibold">NÃºmero de tarjeta</label>
+                      <label for="numeroTarjeta" class="form-label fw-semibold">Número de tarjeta</label>
                       <div class="input-icon-group">
                         <i class="bi bi-credit-card-2-front"></i>
                         <input type="text" class="form-control form-control-lg" id="numeroTarjeta" inputmode="numeric"
@@ -251,10 +251,10 @@
                       </div>
                       <div>
                         <p class="fw-bold mb-1">Paga con Yape o Plin al 942 531 427</p>
-                        <small>Luego ingresa el nÃºmero de operaciÃ³n para validar tu pedido.</small>
+                        <small>Luego ingresa el número de operación para validar tu pedido.</small>
                       </div>
                     </div>
-                    <label for="numeroOperacion" class="form-label fw-semibold mt-3">NÃºmero de operaciÃ³n</label>
+                    <label for="numeroOperacion" class="form-label fw-semibold mt-3">Número de operación</label>
                     <div class="input-icon-group">
                       <i class="bi bi-receipt"></i>
                       <input type="text" class="form-control form-control-lg" id="numeroOperacion" inputmode="numeric"
@@ -278,7 +278,7 @@
                 </div>
                 <div class="summary-line">
                   <span>Delivery / recojo</span>
-                  <strong>SegÃºn selecciÃ³n</strong>
+                  <strong>Según selección</strong>
                 </div>
                 <div class="summary-total">
                   <span>Total a pagar</span>
@@ -293,7 +293,7 @@
                 <div class="secure-list mt-4">
                   <div><i class="bi bi-shield-check"></i> Pago protegido</div>
                   <div><i class="bi bi-credit-card"></i> No guardamos CVV</div>
-                  <div><i class="bi bi-clock-history"></i> ConfirmaciÃ³n inmediata</div>
+                  <div><i class="bi bi-clock-history"></i> Confirmación inmediata</div>
                 </div>
               </aside>
             </div>
@@ -303,7 +303,7 @@
     </div>
   </div>
 
-  <!-- Toast de notificaciÃ³n -->
+  <!-- Toast de notificación -->
   <div class="position-fixed bottom-0 end-0 p-3" style="z-index:9999">
     <div id="toastCarrito" class="toast align-items-center text-white border-0" role="alert">
       <div class="d-flex">
@@ -313,7 +313,7 @@
     </div>
   </div>
 
-  <!-- Modal confirmaciÃ³n de pedido -->
+  <!-- Modal confirmación de pedido -->
   <div class="modal fade" id="modalConfirmacionPedido" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content border-0 rounded-4 shadow">
@@ -322,10 +322,10 @@
             <i class="bi bi-check2-circle"></i>
           </div>
           <p class="text-danger fw-bold text-uppercase small mb-1">Pedido confirmado</p>
-          <h3 class="fw-bold mb-3" id="confirmacion-titulo">Â¡Gracias por tu compra!</h3>
+          <h3 class="fw-bold mb-3" id="confirmacion-titulo">¡Gracias por tu compra!</h3>
           <p class="text-muted mb-4" id="confirmacion-detalle">Tu pedido fue registrado correctamente.</p>
           <div class="bg-light rounded-4 p-3 mb-4 text-start">
-            <div class="d-flex justify-content-between"><span>CÃ³digo</span><strong id="confirmacion-codigo">-</strong></div>
+            <div class="d-flex justify-content-between"><span>Código</span><strong id="confirmacion-codigo">-</strong></div>
             <div class="d-flex justify-content-between"><span>Total</span><strong id="confirmacion-total">S/ 0.00</strong></div>
             <div class="d-flex justify-content-between"><span>Tiempo estimado</span><strong>35 - 45 min</strong></div>
           </div>
@@ -346,14 +346,14 @@
     let carritoTotalActual = 0;
     let metodoPagoSeleccionado = 'TARJETA';
 
-    // â”€â”€ Abrir/cerrar carrito â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // Abrir/cerrar carrito
     function toggleCarrito() {
       const offcanvas = new bootstrap.Offcanvas(document.getElementById('offcanvasCarrito'));
       offcanvas.show();
       cargarCarrito();
     }
 
-    // â”€â”€ Cargar carrito desde el servidor â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // Cargar carrito desde el servidor
     async function cargarCarrito() {
       const res = await fetch('/carrito');
       if (res.status === 401) return; // no logueado
@@ -363,14 +363,14 @@
       actualizarBadge(data.items.reduce((s, i) => s + i.cantidad, 0));
     }
 
-    // â”€â”€ Renderizar items en el panel â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // Renderizar items en el panel
     function renderCarrito(items, total) {
       const contenedor = document.getElementById('carrito-items');
       const footer = document.getElementById('carrito-footer');
       carritoTotalActual = total || 0;
 
       if (!items || items.length === 0) {
-        contenedor.innerHTML = '<p class="text-muted text-center mt-4">Tu carrito estÃ¡ vacÃ­o</p>';
+        contenedor.innerHTML = '<p class="text-muted text-center mt-4">Tu carrito está vacío</p>';
         footer.style.display = 'none';
         return;
       }
@@ -396,7 +396,7 @@
         'S/ ' + total.toFixed(2);
     }
 
-    // â”€â”€ Actualizar badge del navbar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // Actualizar badge del navbar
     function actualizarBadge(cantidad) {
       const badge = document.getElementById('cart-badge');
       if (!badge) return;
@@ -408,7 +408,7 @@
       }
     }
 
-    // â”€â”€ Mostrar toast â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // Mostrar toast
     function mostrarToast(mensaje, tipo = 'success') {
       const toast = document.getElementById('toastCarrito');
       toast.classList.remove('bg-success', 'bg-danger', 'bg-warning');
@@ -418,13 +418,13 @@
       new bootstrap.Toast(toast, { delay: 2500 }).show();
     }
 
-    // â”€â”€ Agregar al carrito â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // Agregar al carrito
     document.querySelectorAll('.add-cart').forEach(btn => {
       btn.addEventListener('click', async function () {
         const tieneSesion = this.dataset.sesion === 'true';
 
         if (!tieneSesion) {
-          mostrarToast('Â¡Inicia sesiÃ³n para agregar al carrito!', 'warning');
+          mostrarToast('¡Inicia sesión para agregar al carrito!', 'warning');
           setTimeout(() => window.location.href = '/login', 1800);
           return;
         }
@@ -434,7 +434,7 @@
         const data = await res.json();
 
         if (res.ok) {
-          mostrarToast(`"${this.dataset.nombre}" agregado al carrito âœ“`, 'success');
+          mostrarToast(`"${this.dataset.nombre}" agregado al carrito ✓`, 'success');
           actualizarBadge(data.cantidad);
         } else {
           mostrarToast(data.error || 'Error al agregar', 'error');
@@ -459,7 +459,7 @@
       });
     });
 
-    // â”€â”€ Quitar del carrito â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // Quitar del carrito
     async function quitarDelCarrito(productoId) {
       const res = await fetch(`/carrito/quitar/${productoId}`, { method: 'DELETE' });
       const data = await res.json();
@@ -467,7 +467,7 @@
       actualizarBadge(data.cantidad);
     }
 
-    // â”€â”€ Vaciar carrito â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // Vaciar carrito
     async function vaciarCarrito() {
       await fetch('/carrito/vaciar', { method: 'DELETE' });
       renderCarrito([], 0);

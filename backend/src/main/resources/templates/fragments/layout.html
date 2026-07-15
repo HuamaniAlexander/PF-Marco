@@ -3,10 +3,10 @@
 <head th:fragment="head(titulo)">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="PollerÃ­a en Carabayllo especializada en pollo a la leÃ±a, parrillas, promociones familiares, reservas y delivery." />
+  <meta name="description" content="Pollería en Carabayllo especializada en pollo a la leña, parrillas, promociones familiares, reservas y delivery." />
 <link rel="icon" type="image/jpeg" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTz1OGk3fEqaN5L9Da-2OGfY2yKyAg5zgpxQ&s" />
 
-  <title th:text="${titulo} + ' | LeÃ±a y Sabores'">LeÃ±a y Sabores</title>
+  <title th:text="${titulo} + ' | Leña y Sabores'">Leña y Sabores</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet" />
@@ -19,7 +19,7 @@
   <div class="container">
     <a class="navbar-brand d-flex align-items-center gap-2" th:href="@{/}">
       <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTz1OGk3fEqaN5L9Da-2OGfY2yKyAg5zgpxQ&s" alt="logo" />
-      <span class="brand-name">LeÃ±a y Sabores</span>
+      <span class="brand-name">Leña y Sabores</span>
     </a>
     <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
       <span class="navbar-toggler-icon"></span>
@@ -33,7 +33,7 @@
       </ul>
 <div class="navbar-actions d-flex align-items-center gap-2">
 
-  <!-- Ãcono del carrito con contador -->
+  <!-- Ícono del carrito con contador -->
   <button type="button" class="nav-icon-btn position-relative cart-icon-wrapper"
        th:onclick="${session.usuarioId != null} ? 'window.location=\'/mi-carrito\'' : 'window.location=\'/login\''">
     <i class="bi bi-bag fs-5"></i>
@@ -85,7 +85,7 @@
         <span class="dropdown-icon bg-light text-danger"><i class="bi bi-box-arrow-right"></i></span>
         <span>
           <strong>Salir</strong>
-          <small>Cerrar sesiÃ³n</small>
+          <small>Cerrar sesión</small>
         </span>
       </a>
     </div>
@@ -104,8 +104,8 @@
           <div class="row align-items-center">
             <div class="col-lg-7">
               <span class="badge bg-warning text-dark rounded-pill px-3 py-2 mb-3 d-inline-block">Empresas y grupos</span>
-              <h2 class="text-white fw-bold mb-3">Â¿Almuerzo para todo el equipo?</h2>
-              <p class="text-white-50 mb-4">Contamos con paquetes corporativos y menÃºs especiales para grupos grandes. Â¡Reserva ahora y asegura tu lugar!
+              <h2 class="text-white fw-bold mb-3">¿Almuerzo para todo el equipo?</h2>
+              <p class="text-white-50 mb-4">Contamos con paquetes corporativos y menús especiales para grupos grandes. ¡Reserva ahora y asegura tu lugar!
 </p>
               <a href="../reserva" class="btn btn-danger btn-lg fw-semibold">Consultar packs 
 <i class="bi bi-arrow-right ms-1"></i></a>
@@ -123,7 +123,7 @@
   <div th:fragment="banner-info" class="mt-5 rounded-4 overflow-hidden position-relative" style="height:180px;">
       <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=1200&amp;q=80" class="w-100 h-100 object-fit-cover" alt="restaurante" style="object-fit:cover;">
       <div class="position-absolute bottom-0 start-0 end-0 p-4" style="background:linear-gradient(to top, rgba(0,0,0,0.7), transparent);">
-        <p class="text-white fw-bold fs-5 mb-0">ðŸ† Mas de 15 aÃ±os llevando el mejor sabor a las familias peruanas</p>
+        <p class="text-white fw-bold fs-5 mb-0">🏆 Más de 15 años llevando el mejor sabor a las familias peruanas</p>
       </div>
     </div>
 
@@ -138,8 +138,8 @@
   <div class="container">
     <div class="row g-4">
       <div class="col-12 col-md-6 col-lg-3">
-        <h4 class="text-white mb-3" style="font-family:var(--fuente-display);">LeÃ±a y Sabores</h4>
-        <p class="small">Especialistas en Pollos & Parrillas para degustar en familia el verdadero Pollo a la LeÃ±a.</p>
+        <h4 class="text-white mb-3" style="font-family:var(--fuente-display);">Leña y Sabores</h4>
+        <p class="small">Especialistas en Pollos & Parrillas para degustar en familia el verdadero Pollo a la Leña.</p>
         <div class="d-flex gap-3 mt-3">
           <a href="https://www.facebook.com/lenasysabores/?locale=es_LA" target="_blank"><i class="bi bi-facebook fs-5"></i></a>
           <a href="#"><i class="bi bi-instagram fs-5"></i></a>
@@ -158,7 +158,7 @@
       <div class="col-12 col-md-6 col-lg-3">
         <h5>Contacto</h5>
         <ul>
-          <li><i class="bi bi-geo-alt me-2"></i>Carabayllo, PerÃº</li>
+          <li><i class="bi bi-geo-alt me-2"></i>Carabayllo, Perú</li>
           <li><i class="bi bi-telephone me-2"></i>942 531 427</li>
           <li><i class="bi bi-envelope me-2"></i>reservas@lenaysabores.com</li>
         </ul>
@@ -169,7 +169,7 @@
         <p class="small">11:00 a.m. - 10:00 p.m.</p>
       </div>
     </div>
-    <div class="footer-bottom">Â© 2026 LeÃ±a y Sabores. Proyecto con Spring Boot y Thymeleaf.</div>
+    <div class="footer-bottom">© 2026 Leña y Sabores.</div>
   </div>
   <a class="whatsapp-float" href="https://web.whatsapp.com/send?phone=51942531427&text=Hola%20Le%C3%B1a%20y%20Sabores%20%F0%9F%94%A5%2C%20buen%20d%C3%ADa.%20Quisiera%20recibir%20atenci%C3%B3n%20para%20consultar%20mi%20pedido%20o%20hacer%20una%20compra.%20Gracias." target="_blank" aria-label="Pedir por WhatsApp">
     <i class="bi bi-whatsapp"></i>
@@ -185,8 +185,8 @@
         <div class="d-flex align-items-center gap-2">
           <span class="chatbot-avatar"><i class="bi bi-fire"></i></span>
           <div>
-            <strong>LeÃ±aBot</strong>
-            <small>Asistente de la pollerÃ­a</small>
+            <strong>LeñaBot</strong>
+            <small>Asistente de la pollería</small>
           </div>
         </div>
         <button class="chatbot-close" id="chatbotClose" type="button" aria-label="Cerrar chatbot">
@@ -196,7 +196,7 @@
 
       <div class="chatbot-messages" id="chatbotMessages">
         <div class="chatbot-message bot">
-          Â¡Hola! Soy LeÃ±aBot. Puedo ayudarte con carta, promociones, reservas, delivery, pagos o estado de pedido.
+          ¡Hola! Soy LeñaBot. Puedo ayudarte con carta, promociones, reservas, delivery, pagos o estado de pedido.
         </div>
       </div>
 
