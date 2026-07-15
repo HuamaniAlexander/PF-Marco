@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Login')}"></head>
+<body class="bg-light">
+<div th:replace="~{fragments/layout :: navbar('login')}"></div>
+
+<section class="py-5">
+  <div class="container">
+    <div class="text-center py-4 mb-4">
+      <h1 class="fw-bold">Bienvenido a Leña y Sabores</h1>
+      <p class="text-muted mt-2">Inicia sesión o crea tu cuenta para disfrutar de todos los beneficios</p>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-8 col-lg-5">
+        <div class="card border-0 shadow rounded-4 overflow-hidden">
+          <div class="card-body p-5">
+            <div class="text-center mb-4">
+              <h1 class="h2 fw-bold">Iniciar sesión</h1>
+              <p class="text-muted">Accede para gestionar tus reservas y hacer pedidos.</p>
+            </div>
+
+            <!-- Mensaje de éxito (ej: tras registrarse) -->
+            <div th:if="${mensajeExito}" class="alert alert-success" th:text="${mensajeExito}"></div>
+
+            <!-- Mensaje de aviso (ej: intentó acceder sin sesión) -->
+            <div th:if="${mensaje}" class="alert alert-warning" th:text="${mensaje}"></div>
+
+            <!-- Error de credenciales -->
+            <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+            <form th:action="@{/login}" th:object="${loginForm}" method="post">
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Correo</label>
+                <input type="email" class="form-control" th:field="*{correo}"
+                       placeholder="usuario@lenaysabores.com" />
+                <div class="text-danger small mt-1"
+                     th:if="${#fields.hasErrors('correo')}"
+                     th:errors="*{correo}"></div>
+              </div>
+              <div class="mb-4">
+                <label class="form-label fw-semibold">Contraseña</label>
+                <input type="password" class="form-control" th:field="*{password}"
+                       placeholder="********" />
+                <div class="text-danger small mt-1"
+                     th:if="${#fields.hasErrors('password')}"
+                     th:errors="*{password}"></div>
+              </div>
+              <button type="submit" class="btn btn-danger w-100 fw-bold py-3">
+                Ingresar
+              </button>
+            </form>
+
+            <!-- Separador y botón de registro -->
+            <hr class="my-4">
+            <div class="text-center">
+              <p class="text-muted mb-3">¿Aún no tienes cuenta?</p>
+              <a href="/registro" class="btn btn-outline-danger w-100 fw-bold py-2">
+                Crear cuenta
+              </a>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <section th:replace="~{fragments/layout :: banner-info}"></section>
+    </div>
+  </div>
+</section>
+
+<div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

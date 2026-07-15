@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Inicio')}"></head>
+<body>
+<div th:replace="~{fragments/layout :: navbar('inicio')}"></div>
+
+<div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="5000">
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <div class="hero-item position-relative">
+        <img src="https://delishglobe.com/wp-content/uploads/2025/07/Pollo-a-la-Brasa-Peruvian-Roasted-Chicken-.png" alt="Pollo a la brasa" />
+        <div class="hero-overlay"></div>
+        <div class="hero-text">
+          <span class="badge bg-warning text-dark rounded-pill px-3 py-2 mb-3 d-inline-block">🔥 Pollería en Carabayllo</span>
+          <h1 class="display-3 fw-bold text-white lh-1 mb-3">Pollo a la leña<br/>jugoso y crocante</h1>
+          <p class="text-white-50 fs-5 mb-4">Pollos, parrillas y promociones familiares con el sabor ahumado que se comparte en mesa grande.</p>
+          <div class="d-flex flex-wrap gap-2">
+            <a th:href="@{/carta}" class="btn btn-danger btn-lg fw-semibold"><i class="bi bi-bag-check me-2"></i>Pedir ahora</a>
+            <a href="https://wa.me/51999999999?text=Hola%20Le%C3%B1a%20y%20Sabores%2C%20quiero%20hacer%20un%20pedido" target="_blank" class="btn btn-outline-light btn-lg fw-semibold"><i class="bi bi-whatsapp me-2"></i>WhatsApp</a>
+          </div>
+          <div class="hero-trust d-flex flex-wrap gap-3 mt-4">
+            <span><i class="bi bi-clock"></i> 11am - 10pm</span>
+            <span><i class="bi bi-scooter"></i> Delivery</span>
+            <span><i class="bi bi-star-fill"></i> 4.8/5 clientes</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="carousel-item">
+      <div class="hero-item position-relative">
+        <img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=1600&q=85" alt="Parrilla" />
+        <div class="hero-overlay"></div>
+        <div class="hero-text">
+          <span class="badge bg-warning text-dark rounded-pill px-3 py-2 mb-3 d-inline-block">🔥 Recién salido de la brasa</span>
+          <h1 class="display-3 fw-bold text-white lh-1 mb-3">Parrillas y combos<br/>para compartir</h1>
+          <p class="text-white-50 fs-5 mb-4">Cortes seleccionados, papas crocantes y promociones para el almuerzo familiar.</p>
+          <a th:href="@{/promociones}" class="btn btn-danger btn-lg fw-semibold">Ver combos familiares</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev"><span class="carousel-control-prev-icon"></span></button>
+  <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next"><span class="carousel-control-next-icon"></span></button>
+</div>
+
+<section class="trust-strip py-4">
+  <div class="container">
+    <div class="row g-3 text-center">
+      <div class="col-6 col-lg-3"><i class="bi bi-fire"></i><strong>Leña real</strong><span>Sabor ahumado auténtico</span></div>
+      <div class="col-6 col-lg-3"><i class="bi bi-geo-alt"></i><strong>Carabayllo</strong><span>Atención local y cercana</span></div>
+      <div class="col-6 col-lg-3"><i class="bi bi-credit-card"></i><strong>Pago seguro</strong><span>Tarjeta, Yape o Plin</span></div>
+      <div class="col-6 col-lg-3"><i class="bi bi-people"></i><strong>Familiar</strong><span>Promos para compartir</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="categorias" class="py-5 mt-3">
+  <div class="container">
+    <p class="text-danger fw-bold text-uppercase small mb-1" style="letter-spacing:1px;">Explora</p>
+    <h2 class="fw-bold mb-2">Explora nuestras especialidades</h2>
+    <p class="text-muted mb-4">Categorías pensadas para lo que realmente ofrece Leña y Sabores.</p>
+    <div class="row row-cols-2 row-cols-md-4 g-4 text-center">
+      <div class="col">
+        <a th:href="@{/carta}" class="category-card d-block text-decoration-none text-dark h-100">
+          <div class="cat-circle mx-auto mb-3">
+            <img src="https://delishglobe.com/wp-content/uploads/2025/07/Pollo-a-la-Brasa-Peruvian-Roasted-Chicken-.png" alt="Pollos a la leña" />
+          </div>
+          <span class="fw-bold d-block">Pollos a la leña</span>
+          <small class="text-muted">La especialidad de la casa</small>
+        </a>
+      </div>
+      <div class="col">
+        <a th:href="@{/carta}" class="category-card d-block text-decoration-none text-dark h-100">
+          <div class="cat-circle mx-auto mb-3">
+            <img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=300&q=80" alt="Parrillas y brasas" />
+          </div>
+          <span class="fw-bold d-block">Parrillas y brasas</span>
+          <small class="text-muted">Cortes, anticuchos y sabor ahumado</small>
+        </a>
+      </div>
+      <div class="col">
+        <a th:href="@{/promociones}" class="category-card d-block text-decoration-none text-dark h-100">
+          <div class="cat-circle mx-auto mb-3">
+            <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=300&q=80" alt="Promociones familiares" />
+          </div>
+          <span class="fw-bold d-block">Promociones familiares</span>
+          <small class="text-muted">Combos para compartir</small>
+        </a>
+      </div>
+      <div class="col">
+        <a th:href="@{/carta}" class="category-card d-block text-decoration-none text-dark h-100">
+          <div class="cat-circle mx-auto mb-3">
+            <img src="https://images.unsplash.com/photo-1544145945-f90425340c7e?w=300&q=80" alt="Bebidas" />
+          </div>
+          <span class="fw-bold d-block">Bebidas</span>
+          <small class="text-muted">El complemento perfecto</small>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="combos" class="py-5 bg-cream">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div><p class="text-danger fw-bold text-uppercase small mb-1" style="letter-spacing:1px;">Combos familiares</p><h2 class="fw-bold mb-0">Promociones para hoy</h2></div>
+      <a th:href="@{/promociones}" class="text-danger fw-semibold">Ver todas <i class="bi bi-arrow-right"></i></a>
+    </div>
+    <div class="row g-4">
+      <div class="col-12 col-md-6 col-lg-4" th:each="promo,iter : ${promociones}" th:if="${iter.index &lt; 3}">
+        <div class="card border-0 shadow-sm rounded-4 overflow-hidden h-100">
+          <img th:src="${promo.imagenUrl}" class="card-img-top card-img-fixed" th:alt="${promo.titulo}" />
+          <div class="card-body p-4">
+            <span class="badge bg-warning text-dark mb-2" th:text="${promo.etiqueta}">Promo</span>
+            <h5 class="fw-bold" th:text="${promo.titulo}">Promo</h5>
+            <p class="text-muted" th:text="${promo.descripcion}">Descripcion</p>
+            <p class="mb-3"><span class="text-muted text-decoration-line-through" th:text="'S/ ' + ${#numbers.formatDecimal(promo.precioAntes, 1, 2)}"></span> <span class="fs-4 fw-bold text-danger" th:text="'S/ ' + ${#numbers.formatDecimal(promo.precioAhora, 1, 2)}"></span></p>
+            <a th:href="@{/carta}" class="btn btn-outline-danger btn-sm fw-semibold">Agregar desde la carta</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section th:replace="~{fragments/layout :: hero-promo}">
+</section>
+
+<section class="py-5 bg-cream">
+  <div class="container">
+    <div class="text-center mb-5">
+      <p class="text-danger fw-bold text-uppercase small mb-1" style="letter-spacing:1px;">Reseñas</p>
+      <h2 class="fw-bold mb-3">Lo que dicen nuestros clientes</h2>
+      <p class="text-muted mx-auto mb-0" style="max-width:620px;">Historias reales de familias y amigos que disfrutan el sabor a la leña.</p>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-12 col-md-4">
+        <div class="review-card h-100">
+          <div class="text-warning mb-3">
+            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+          </div>
+          <p class="text-muted">"El pollo llegó jugoso, con ese saborcito ahumado que no se encuentra en cualquier lugar. Buenazo para pedir en familia."</p>
+          <div class="d-flex align-items-center gap-3 mt-4">
+            <div class="review-avatar">MC</div>
+            <div>
+              <div class="fw-bold">María Cárdenas</div>
+              <small class="text-muted">Carabayllo · Pedido delivery</small>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-4">
+        <div class="review-card h-100">
+          <div class="text-warning mb-3">
+            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+          </div>
+          <p class="text-muted">"Reservamos mesa y la atención fue rápida. Las parrillas estuvieron en su punto y las porciones son generosas."</p>
+          <div class="d-flex align-items-center gap-3 mt-4">
+            <div class="review-avatar">JR</div>
+            <div>
+              <div class="fw-bold">Jorge Ramírez</div>
+              <small class="text-muted">Local · Reserva de mesa</small>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-4">
+        <div class="review-card h-100">
+          <div class="text-warning mb-3">
+            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-half"></i>
+          </div>
+          <p class="text-muted">"Las promociones familiares salvan el almuerzo del domingo. Buena relación precio-calidad y papas crocantes."</p>
+          <div class="d-flex align-items-center gap-3 mt-4">
+            <div class="review-avatar">AV</div>
+            <div>
+              <div class="fw-bold">Andrea Vargas</div>
+              <small class="text-muted">Domingo familiar</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="py-5 final-cta">
+  <div class="container text-center">
+    <h2 class="fw-bold mb-3">¿Listo para comer rico hoy?</h2>
+    <p class="text-muted mb-4">Pide tu pollo a la leña, reserva mesa o escríbenos por WhatsApp. La brasa ya está encendida.
+    </p>
+    <div class="d-flex justify-content-center flex-wrap gap-2">
+      <a th:href="@{/carta}" class="btn btn-danger btn-lg fw-semibold">Pedir ahora</a>
+      <a th:href="@{/reserva}" class="btn btn-outline-danger btn-lg fw-semibold">Reservar mesa</a>
+    </div>
+  </div>
+</section>
+
+<div th:replace="~{fragments/layout :: footer}"></div>
+
+
+</body>
+</html>

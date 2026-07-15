@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Mi carrito')}"></head>
+<body>
+<div th:replace="~{fragments/layout :: navbar('carrito')}"></div>
+
+<section class="cart-page-hero py-5">
+  <div class="container">
+    <span class="badge bg-warning text-dark rounded-pill px-3 py-2 mb-3"><i class="bi bi-bag-check me-1"></i> Checkout</span>
+    <h1 class="display-5 fw-bold text-white mb-2">Mi carrito</h1>
+    <p class="text-white-50 mb-0">Revisa tu pedido y completa el pago sin ventanas superpuestas.</p>
+  </div>
+</section>
+
+<main class="container py-5">
+  <div class="row g-4">
+    <div class="col-lg-7">
+      <div class="cart-page-card">
+        <div class="d-flex justify-content-between align-items-center gap-3 mb-4">
+          <div>
+            <p class="text-danger fw-bold text-uppercase small mb-1" style="letter-spacing:1px;">Pedido</p>
+            <h3 class="fw-bold mb-0">Productos seleccionados</h3>
+          </div>
+          <a th:href="@{/carta}" class="btn btn-outline-danger btn-sm"><i class="bi bi-plus-circle me-1"></i>Agregar más</a>
+        </div>
+        <div id="checkout-items"></div>
+        <div class="d-flex justify-content-between align-items-center border-top pt-3 mt-3">
+          <button class="btn btn-outline-secondary" type="button" onclick="vaciarCarritoPagina()">Vaciar carrito</button>
+          <strong class="fs-4 text-danger" id="checkout-total">S/ 0.00</strong>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-5">
+      <div class="cart-page-card checkout-sticky">
+        <form id="checkoutForm" class="checkout-page-form">
+          <div class="checkout-section-title">
+            <span>1</span>
+            <div><h5>Entrega</h5><p>Escoge cómo recibirás tu pedido.</p></div>
+          </div>
+          <div class="row g-3 mb-3">
+            <div class="col-6">
+              <input class="btn-check" type="radio" name="metodoEntrega" id="pageDelivery" value="DELIVERY" checked>
+              <label class="checkout-option-card" for="pageDelivery"><i class="bi bi-scooter"></i><strong>Delivery</strong><small>A domicilio</small></label>
+            </div>
+            <div class="col-6">
+              <input class="btn-check" type="radio" name="metodoEntrega" id="pageRecojo" value="RECOJO">
+              <label class="checkout-option-card" for="pageRecojo"><i class="bi bi-shop"></i><strong>Recojo</strong><small>En local</small></label>
+            </div>
+          </div>
+          <div id="pageGrupoDireccion" class="mb-4">
+            <label class="form-label fw-semibold" for="pageDireccionEntrega">Dirección</label>
+            <div class="input-icon-group"><i class="bi bi-geo-alt"></i><input id="pageDireccionEntrega" class="form-control form-control-lg" placeholder="Ej. Av. Universitaria 123, Carabayllo"></div>
+          </div>
+
+          <div class="checkout-section-title">
+            <span>2</span>
+            <div><h5>Pago</h5><p>Tarjeta, Yape o Plin.</p></div>
+          </div>
+          <ul class="nav checkout-payment-tabs mb-4" id="pageTabsPago">
+            <li class="nav-item flex-fill"><button class="nav-link active w-100" type="button" data-metodo="TARJETA"><i class="bi bi-credit-card me-2"></i>Tarjeta</button></li>
+            <li class="nav-item flex-fill"><button class="nav-link w-100" type="button" data-metodo="YAPE_PLIN"><i class="bi bi-phone me-2"></i>Yape / Plin</button></li>
+          </ul>
+
+          <div id="pageCamposTarjeta" class="row g-3">
+            <div class="col-12"><label class="form-label fw-semibold" for="pageNumeroTarjeta">Número de tarjeta</label><div class="input-icon-group"><i class="bi bi-credit-card"></i><input id="pageNumeroTarjeta" class="form-control form-control-lg" inputmode="numeric" maxlength="23" placeholder="4111 1111 1111 1111"></div></div>
+            <div class="col-6"><label class="form-label fw-semibold" for="pageVencimiento">Vencimiento</label><div class="input-icon-group"><i class="bi bi-calendar2-week"></i><input id="pageVencimiento" class="form-control form-control-lg" inputmode="numeric" maxlength="5" placeholder="MM/YY"></div></div>
+            <div class="col-6"><label class="form-label fw-semibold" for="pageCvv">CVV</label><div class="input-icon-group"><i class="bi bi-lock"></i><input id="pageCvv" class="form-control form-control-lg" type="password" inputmode="numeric" maxlength="4" placeholder="123"></div></div>
+            <div class="col-12"><label class="form-label fw-semibold" for="pageNombreTarjeta">Nombre en la tarjeta</label><div class="input-icon-group"><i class="bi bi-person"></i><input id="pageNombreTarjeta" class="form-control form-control-lg" placeholder="Como aparece en la tarjeta"></div></div>
+          </div>
+
+          <div id="pageCamposYape" class="d-none">
+            <div class="yape-qr-large mx-auto mb-3"><i class="bi bi-qr-code"></i></div>
+            <p class="text-center fw-bold mb-1">Escanea o paga al 942 531 427</p>
+            <p class="text-center text-muted small mb-3">Después registra tu número y código de aprobación.</p>
+            <div class="row g-3">
+              <div class="col-12"><label class="form-label fw-semibold" for="pageNumeroYapePlin">Número Yape/Plin</label><div class="input-icon-group"><i class="bi bi-phone"></i><input id="pageNumeroYapePlin" class="form-control form-control-lg" inputmode="numeric" maxlength="9" placeholder="9XXXXXXXX"></div></div>
+              <div class="col-md-6"><label class="form-label fw-semibold" for="pageNumeroOperacion">N° operación</label><div class="input-icon-group"><i class="bi bi-receipt"></i><input id="pageNumeroOperacion" class="form-control form-control-lg" inputmode="numeric" maxlength="12" placeholder="12345678"></div></div>
+              <div class="col-md-6"><label class="form-label fw-semibold" for="pageCodigoAprobacion">Código aprobación</label><div class="input-icon-group"><i class="bi bi-patch-check"></i><input id="pageCodigoAprobacion" class="form-control form-control-lg" maxlength="12" placeholder="ABC123"></div></div>
+            </div>
+          </div>
+
+          <div class="cart-page-total mt-4">
+            <span>Total</span>
+            <strong id="checkout-total-form">S/ 0.00</strong>
+          </div>
+          <button id="pageBtnPagar" type="button" class="btn btn-danger btn-lg w-100 fw-bold mt-3" onclick="procesarPagoPagina()"><i class="bi bi-lock-fill me-2"></i>Pagar pedido</button>
+          <div class="small text-muted text-center mt-2"><i class="bi bi-shield-check me-1"></i>Pago seguro y validación inmediata</div>
+        </form>
+      </div>
+    </div>
+  </div>
+</main>
+
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index:9999">
+  <div id="toastCarritoPagina" class="toast align-items-center text-white border-0" role="alert">
+    <div class="d-flex">
+      <div class="toast-body fw-semibold" id="toast-carrito-pagina-msg">Mensaje</div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+    </div>
+  </div>
+</div>
+
+<div th:replace="~{fragments/layout :: footer}"></div>
+<script th:src="@{/js/carrito-page.js}"></script>
+</body>
+</html>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Registro')}"></head>
+<body class="bg-light">
+<div th:replace="~{fragments/layout :: navbar('registro')}"></div>
+
+<section class="py-5">
+  <div class="container">
+    <div class="text-center py-4 mb-4">
+      <h1 class="fw-bold">Crea tu cuenta</h1>
+      <p class="text-muted mt-2">Regístrate para hacer reservas y agregar productos al carrito</p>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-8 col-lg-5">
+        <div class="card border-0 shadow rounded-4 overflow-hidden">
+          <div class="card-body p-5">
+            <div class="text-center mb-4">
+              <h2 class="h3 fw-bold">Registro</h2>
+            </div>
+
+            <!-- Error de correo duplicado -->
+            <div th:if="${errorCorreo}" class="alert alert-danger" th:text="${errorCorreo}"></div>
+
+            <!-- Error de contraseñas que no coinciden -->
+            <div th:if="${errorPassword}" class="alert alert-danger" th:text="${errorPassword}"></div>
+
+            <div th:if="${errorDni}" class="alert alert-danger" th:text="${errorDni}"></div>
+
+            <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+            <form th:action="@{/registro}" th:object="${registroForm}" method="post">
+
+              <div class="mb-3">
+                <label class="form-label fw-semibold">DNI</label>
+                <input type="text" class="form-control" th:field="*{dni}"
+                       maxlength="8" inputmode="numeric" autocomplete="off"
+                       placeholder="Ingresa tu DNI" />
+                <div id="dniMensaje" class="small mt-1"></div>
+                <div class="text-danger small mt-1"
+                     th:if="${#fields.hasErrors('dni')}"
+                     th:errors="*{dni}"></div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Nombre completo</label>
+                <input type="text" class="form-control" th:field="*{nombre}"
+                       placeholder="Juan Pérez" />
+                <div class="text-danger small mt-1"
+                     th:if="${#fields.hasErrors('nombre')}"
+                     th:errors="*{nombre}"></div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Correo electrónico</label>
+                <input type="email" class="form-control" th:field="*{correo}"
+                       placeholder="juan@correo.com" />
+                <div class="text-danger small mt-1"
+                     th:if="${#fields.hasErrors('correo')}"
+                     th:errors="*{correo}"></div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Contraseña</label>
+                <input type="password" class="form-control" th:field="*{password}"
+                       placeholder="Mínimo 6 caracteres" />
+                <div class="text-danger small mt-1"
+                     th:if="${#fields.hasErrors('password')}"
+                     th:errors="*{password}"></div>
+              </div>
+
+              <div class="mb-4">
+                <label class="form-label fw-semibold">Confirmar contraseña</label>
+                <input type="password" class="form-control" th:field="*{confirmarPassword}"
+                       placeholder="Repite tu contraseña" />
+                <div class="text-danger small mt-1"
+                     th:if="${#fields.hasErrors('confirmarPassword')}"
+                     th:errors="*{confirmarPassword}"></div>
+              </div>
+
+              <button type="submit" class="btn btn-danger w-100 fw-bold py-3">
+                Crear cuenta
+              </button>
+            </form>
+
+            <hr class="my-4">
+            <div class="text-center">
+              <p class="text-muted mb-3">¿Ya tienes cuenta?</p>
+              <a href="/login" class="btn btn-outline-danger w-100 fw-bold py-2">
+                Iniciar sesión
+              </a>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div th:replace="~{fragments/layout :: footer}"></div>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const dniInput = document.getElementById('dni');
+    const nombreInput = document.getElementById('nombre');
+    const dniMensaje = document.getElementById('dniMensaje');
+    let ultimoDniConsultado = '';
+
+    if (!dniInput || !nombreInput || !dniMensaje) {
+      return;
+    }
+
+    const mostrarMensaje = (texto, clase) => {
+      dniMensaje.textContent = texto;
+      dniMensaje.className = `small mt-1 ${clase}`;
+    };
+
+    dniInput.addEventListener('input', async () => {
+      dniInput.value = dniInput.value.replace(/\D/g, '').slice(0, 8);
+      const dni = dniInput.value;
+
+      if (dni.length < 8) {
+        ultimoDniConsultado = '';
+        mostrarMensaje('', '');
+        return;
+      }
+
+      if (dni === ultimoDniConsultado) {
+        return;
+      }
+
+      ultimoDniConsultado = dni;
+      mostrarMensaje('Consultando RENIEC...', 'text-muted');
+
+      try {
+        const response = await fetch(`/api/reniec/dni?numero=${encodeURIComponent(dni)}`);
+
+        if (!response.ok) {
+          nombreInput.value = '';
+          mostrarMensaje('No se encontraron datos para este DNI.', 'text-danger');
+          return;
+        }
+
+        const persona = await response.json();
+        const nombreCompleto = persona.full_name || persona.fullName || [
+          persona.first_last_name || persona.firstLastName,
+          persona.second_last_name || persona.secondLastName,
+          persona.first_name || persona.firstName
+        ].filter(Boolean).join(' ');
+
+        if (!nombreCompleto) {
+          nombreInput.value = '';
+          mostrarMensaje('RENIEC respondio, pero no envio el nombre.', 'text-danger');
+          return;
+        }
+
+        nombreInput.value = nombreCompleto;
+        nombreInput.dispatchEvent(new Event('input', { bubbles: true }));
+        mostrarMensaje('Nombre completado automaticamente.', 'text-success');
+      } catch (error) {
+        mostrarMensaje('No se pudo consultar RENIEC en este momento.', 'text-danger');
+      }
+    });
+  });
+</script>
+</body>
+</html>

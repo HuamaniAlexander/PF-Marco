@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Promociones')}"></head>
+<body>
+<div th:replace="~{fragments/layout :: navbar('promociones')}"></div>
+
+<section class="page-hero d-flex align-items-center text-center py-5">
+  <img src="https://www.losgallos.pe/_astro/66da6cfc-0c7c-4362-9f0b-3456d716ac35.CIbmcZ92_Z18xRFC.webp" alt="promociones" />
+  <div class="container page-hero-content">
+    <span class="badge bg-warning text-dark rounded-pill px-3 py-2 mb-3 d-inline-block"><i class="bi bi-tags"></i> Promociones</span>
+    <h1 class="display-4 fw-bold text-white mb-3">Ofertas de la semana</h1>
+    <p class="text-white-50 fs-5 mx-auto" style="max-width:560px;">Descubre nuestras mejores promociones. Combos familiares, ofertas especiales y mucho mas.</p>
+  </div>
+</section>
+
+<section id="combos" class="py-5 bg-light">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-12 col-md-6 col-lg-4" th:each="promo : ${promociones}">
+        <div class="card border-0 shadow-sm rounded-4 overflow-hidden h-100">
+          <img th:src="${promo.imagenUrl}" class="card-img-top card-img-fixed" th:alt="${promo.titulo}" />
+          <div class="card-body p-4 promo-card-body">
+            <span class="badge bg-warning text-dark mb-2" th:text="${promo.etiqueta}">Promo</span>
+            <h5 class="fw-bold" th:text="${promo.titulo}">Titulo</h5>
+            <p class="text-muted" th:text="${promo.descripcion}">Descripcion</p>
+            <div class="mt-auto">
+              <p class="mb-3"><span class="text-muted text-decoration-line-through" th:text="'S/ ' + ${#numbers.formatDecimal(promo.precioAntes, 1, 2)}"></span> <span class="fs-4 fw-bold text-danger" th:text="'S/ ' + ${#numbers.formatDecimal(promo.precioAhora, 1, 2)}"></span></p>
+              <a th:href="@{/reserva}" class="btn btn-danger w-100 fw-semibold">Reservar mesa</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

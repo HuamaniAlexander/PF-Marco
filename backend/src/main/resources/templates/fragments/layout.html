@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head(titulo)">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Pollería en Carabayllo especializada en pollo a la leña, parrillas, promociones familiares, reservas y delivery." />
+<link rel="icon" type="image/jpeg" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTz1OGk3fEqaN5L9Da-2OGfY2yKyAg5zgpxQ&s" />
+
+  <title th:text="${titulo} + ' | Leña y Sabores'">Leña y Sabores</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
+  <link rel="stylesheet" th:href="@{/css/estilos.css}" />
+</head>
+<body>
+<nav th:fragment="navbar(active)" class="navbar navbar-expand-lg bg-white sticky-top site-navbar">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center gap-2" th:href="@{/}">
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTz1OGk3fEqaN5L9Da-2OGfY2yKyAg5zgpxQ&s" alt="logo" />
+      <span class="brand-name">Leña y Sabores</span>
+    </a>
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navMenu">
+      <ul class="navbar-nav mx-auto gap-1">
+        <li class="nav-item"><a class="nav-link fw-medium" th:classappend="${active == 'inicio'} ? 'active' : 'text-secondary'" th:href="@{/}">Inicio</a></li>
+        <li class="nav-item"><a class="nav-link fw-medium" th:classappend="${active == 'carta'} ? 'active' : 'text-secondary'" th:href="@{/carta}">Carta</a></li>
+        <li class="nav-item"><a class="nav-link fw-medium" th:classappend="${active == 'promociones'} ? 'active' : 'text-secondary'" th:href="@{/promociones}">Promociones</a></li>
+        <li class="nav-item"><a class="nav-link fw-medium" th:classappend="${active == 'reserva'} ? 'active' : 'text-secondary'" th:href="@{/reserva}">Reserva</a></li>
+      </ul>
+<div class="navbar-actions d-flex align-items-center gap-2">
+
+  <!-- Ícono del carrito con contador -->
+  <button type="button" class="nav-icon-btn position-relative cart-icon-wrapper"
+       th:onclick="${session.usuarioId != null} ? 'window.location=\'/mi-carrito\'' : 'window.location=\'/login\''">
+    <i class="bi bi-bag fs-5"></i>
+    <span id="cart-badge"
+          class="cart-badge bg-warning text-dark fw-bold rounded-circle d-none d-flex align-items-center justify-content-center">0</span>
+  </button>
+
+  <div th:if="${session.usuarioId == null}">
+    <a th:href="@{/login}" class="btn btn-danger btn-sm fw-semibold px-3">Ingresar</a>
+  </div>
+
+  <div th:if="${session.usuarioId != null}" class="dropdown">
+    <button class="user-menu-btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+      <i class="bi bi-person-circle"></i>
+      <span th:text="${session.usuarioNombre != null ? session.usuarioNombre.split(' ')[0] : 'Usuario'}">Usuario</span>
+    </button>
+    <div class="dropdown-menu dropdown-menu-end user-dropdown shadow border-0 rounded-4 p-2">
+      <div class="user-dropdown-header">
+        <div class="user-avatar">
+          <i class="bi bi-person-fill"></i>
+        </div>
+        <div class="min-w-0">
+          <div class="fw-bold text-truncate" th:text="${session.usuarioNombre}">Usuario</div>
+          <small class="text-muted" th:text="${session.usuarioRol == 'ADMIN'} ? 'Administrador' : 'Cliente'">Rol</small>
+        </div>
+      </div>
+
+      <div class="dropdown-divider my-2"></div>
+
+      <a th:if="${session.usuarioRol == 'ADMIN'}" class="dropdown-item user-dropdown-item" th:href="@{/admin/dashboard}">
+        <span class="dropdown-icon bg-danger-subtle text-danger"><i class="bi bi-speedometer2"></i></span>
+        <span>
+          <strong>Dashboard</strong>
+          <small>Panel administrativo</small>
+        </span>
+      </a>
+
+      <a th:if="${session.usuarioRol != 'ADMIN'}" class="dropdown-item user-dropdown-item" th:href="@{/perfil}">
+        <span class="dropdown-icon bg-danger-subtle text-danger"><i class="bi bi-person-lines-fill"></i></span>
+        <span>
+          <strong>Mi perfil</strong>
+          <small>Estado de pedido y datos</small>
+        </span>
+      </a>
+
+      <div class="dropdown-divider my-2"></div>
+
+      <a th:href="@{/logout}" class="dropdown-item user-dropdown-item text-danger">
+        <span class="dropdown-icon bg-light text-danger"><i class="bi bi-box-arrow-right"></i></span>
+        <span>
+          <strong>Salir</strong>
+          <small>Cerrar sesión</small>
+        </span>
+      </a>
+    </div>
+  </div>
+
+</div>
+    </div>
+  </div>
+</nav>
+
+<section th:fragment="hero-promo" class="py-5">
+    <div class="container">
+      <div class="bg-dark rounded-4 overflow-hidden position-relative">
+        <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=1200&amp;q=80" alt="fondo" class="position-absolute w-100 h-100 object-fit-cover" style="inset:0; opacity:.35;">
+        <div class="position-relative p-5">
+          <div class="row align-items-center">
+            <div class="col-lg-7">
+              <span class="badge bg-warning text-dark rounded-pill px-3 py-2 mb-3 d-inline-block">Empresas y grupos</span>
+              <h2 class="text-white fw-bold mb-3">¿Almuerzo para todo el equipo?</h2>
+              <p class="text-white-50 mb-4">Contamos con paquetes corporativos y menús especiales para grupos grandes. ¡Reserva ahora y asegura tu lugar!
+</p>
+              <a href="../reserva" class="btn btn-danger btn-lg fw-semibold">Consultar packs 
+<i class="bi bi-arrow-right ms-1"></i></a>
+            </div>
+            <div class="col-lg-5 text-center d-none d-lg-block">
+              <img src="https://scontent.flim28-2.fna.fbcdn.net/v/t39.30808-6/492027880_3759208811035780_2387634490180903171_n.jpg?stp=dst-jpg_s590x590_tt6&_nc_cat=110&ccb=1-7&_nc_sid=0327a3&_nc_ohc=9YFo-p3bLzUQ7kNvwEy3xAp&_nc_oc=Adoksrwgt4M6geH2hTPxdFIC4Vtp76UypUs6HiV9MED7ryQh_kRXuCBIbYXauQEruBg&_nc_zt=23&_nc_ht=scontent.flim28-2.fna&_nc_gid=0L2YYLY8KcEunC9TsHRkuQ&_nc_ss=7a289&oh=00_Af4-wGa2-SAowy-KwwkI455EJWa4P59oRWq_tlA4TzDpNA&oe=6A04384A" alt="pollo" class="img-fluid rounded-3" style="max-height:280px; object-fit:cover;">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <div th:fragment="banner-info" class="mt-5 rounded-4 overflow-hidden position-relative" style="height:180px;">
+      <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=1200&amp;q=80" class="w-100 h-100 object-fit-cover" alt="restaurante" style="object-fit:cover;">
+      <div class="position-absolute bottom-0 start-0 end-0 p-4" style="background:linear-gradient(to top, rgba(0,0,0,0.7), transparent);">
+        <p class="text-white fw-bold fs-5 mb-0">🏆 Mas de 15 años llevando el mejor sabor a las familias peruanas</p>
+      </div>
+    </div>
+
+
+
+
+
+
+
+
+<footer th:fragment="footer" class="site-footer">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-12 col-md-6 col-lg-3">
+        <h4 class="text-white mb-3" style="font-family:var(--fuente-display);">Leña y Sabores</h4>
+        <p class="small">Especialistas en Pollos & Parrillas para degustar en familia el verdadero Pollo a la Leña.</p>
+        <div class="d-flex gap-3 mt-3">
+          <a href="https://www.facebook.com/lenasysabores/?locale=es_LA" target="_blank"><i class="bi bi-facebook fs-5"></i></a>
+          <a href="#"><i class="bi bi-instagram fs-5"></i></a>
+          <a href="https://wa.me/51999999999?text=Hola%20Le%C3%B1a%20y%20Sabores%2C%20quiero%20hacer%20un%20pedido" target="_blank"><i class="bi bi-whatsapp fs-5"></i></a>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-3">
+        <h5>Secciones</h5>
+        <ul>
+          <li><a th:href="@{/}">Inicio</a></li>
+          <li><a th:href="@{/carta}">Carta</a></li>
+          <li><a th:href="@{/promociones}">Promociones</a></li>
+          <li><a th:href="@{/reserva}">Reserva</a></li>
+        </ul>
+      </div>
+      <div class="col-12 col-md-6 col-lg-3">
+        <h5>Contacto</h5>
+        <ul>
+          <li><i class="bi bi-geo-alt me-2"></i>Carabayllo, Perú</li>
+          <li><i class="bi bi-telephone me-2"></i>942 531 427</li>
+          <li><i class="bi bi-envelope me-2"></i>reservas@lenaysabores.com</li>
+        </ul>
+      </div>
+      <div class="col-12 col-md-6 col-lg-3">
+        <h5>Horario</h5>
+        <p class="small mb-1">Lunes a Domingo</p>
+        <p class="small">11:00 a.m. - 10:00 p.m.</p>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2026 Leña y Sabores. Proyecto con Spring Boot y Thymeleaf.</div>
+  </div>
+  <a class="whatsapp-float" href="https://wa.me/51999999999?text=Hola%20Le%C3%B1a%20y%20Sabores%2C%20quiero%20hacer%20un%20pedido" target="_blank" aria-label="Pedir por WhatsApp">
+    <i class="bi bi-whatsapp"></i>
+  </a>
+
+  <div class="chatbot-widget" id="chatbotWidget">
+    <button class="chatbot-toggle" id="chatbotToggle" type="button" aria-label="Abrir chatbot">
+      <i class="bi bi-chat-dots-fill"></i>
+    </button>
+
+    <div class="chatbot-panel" id="chatbotPanel" hidden>
+      <div class="chatbot-header">
+        <div class="d-flex align-items-center gap-2">
+          <span class="chatbot-avatar"><i class="bi bi-fire"></i></span>
+          <div>
+            <strong>LeñaBot</strong>
+            <small>Asistente de la pollería</small>
+          </div>
+        </div>
+        <button class="chatbot-close" id="chatbotClose" type="button" aria-label="Cerrar chatbot">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+
+      <div class="chatbot-messages" id="chatbotMessages">
+        <div class="chatbot-message bot">
+          ¡Hola! Soy LeñaBot. Puedo ayudarte con carta, promociones, reservas, delivery, pagos o estado de pedido.
+        </div>
+      </div>
+
+      <form class="chatbot-form" id="chatbotForm">
+        <input id="chatbotInput" type="text" maxlength="600" autocomplete="off"
+               placeholder="Pregunta por carta, reservas o delivery..." />
+        <button type="submit" aria-label="Enviar mensaje">
+          <i class="bi bi-send-fill"></i>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script th:src="@{/js/main.js}"></script>
+  <script th:src="@{/js/chatbot.js}"></script>
+</footer>
+</body>
+</html>

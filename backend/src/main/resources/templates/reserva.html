@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Reserva')}"></head>
+<body>
+<div th:replace="~{fragments/layout :: navbar('reserva')}"></div>
+
+<section class="page-hero d-flex align-items-center text-center py-5">
+  <img src="https://trome.com/resizer/v2/DBQOR2DOJBEUPN7TFBVANKMEWU.jpg?auth=90d9d6aa6036ffaf06a8d325a8939887e58e2d9ace1bf942cb40d5c86bb2147c&width=1800&height=1200&quality=90&smart=true" alt="restaurante" />
+  <div class="container page-hero-content">
+    <span class="badge bg-warning text-dark rounded-pill px-3 py-2 mb-3 d-inline-block"><i class="bi bi-calendar-check"></i> Reserva tu experiencia</span>
+    <h1 class="display-4 fw-bold text-white mb-3">Tu mesa te espera</h1>
+    <p class="text-white-50 fs-5 mx-auto" style="max-width:500px;">Selecciona la fecha ideal para visitarnos.</p>
+  </div>
+</section>
+
+<div class="container py-5 mt-auto" style="margin-top:-60px; position:relative; z-index:10;">
+  <div class="bg-white rounded-4 shadow overflow-hidden">
+    <div class="row g-0">
+      <div class="col-12 col-lg-4 bg-danger text-white p-5">
+        <h2 class="fw-bold text-white mb-3">Tu mesa<br/>te espera</h2>
+        <p class="text-white-50 mb-4">Selecciona la fecha ideal.</p>
+        <div class="d-flex gap-3 mb-4">
+          <div class="bg-white bg-opacity-25 rounded-3 d-flex align-items-center justify-content-center flex-shrink-0" style="width:44px;height:44px;"><i class="bi bi-geo-alt fs-5"></i></div>
+          <div><div class="fw-semibold">Ubicacion</div><div class="text-white-50 small">C. Turistico Los Palomares Mz. D Lt. 5<br/>Carabayllo, Peru</div></div>
+        </div>
+        <div class="d-flex gap-3 mb-4">
+          <div class="bg-white bg-opacity-25 rounded-3 d-flex align-items-center justify-content-center flex-shrink-0" style="width:44px;height:44px;"><i class="bi bi-clock fs-5"></i></div>
+          <div><div class="fw-semibold">Horario</div><div class="text-white-50 small">Lunes a Domingo: 11am - 10pm</div></div>
+        </div>
+        <div class="rounded-3 overflow-hidden d-none d-lg-block mt-4">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d976.2720204913917!2d-77.04547399999998!3d-11.829104625247988!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9105d7d818c8211b%3A0xe3c1dbeab2595baa!2sLe%C3%B1as%20y%20Sabores!5e0!3m2!1sen!2sus!4v1778270255024!5m2!1sen!2sus" width="100%" height="250" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+        </div>
+      </div>
+
+      <div class="col-12 col-lg-8 p-5">
+        <h4 class="fw-bold mb-4">Completa tu reserva</h4>
+
+        <div th:if="${mensaje}" class="alert alert-success" th:text="${mensaje}"></div>
+
+        <form th:action="@{/reserva}" th:object="${reserva}" method="post" id="reserva-form">
+          <div class="row g-3 mb-4">
+            <div class="col-12 col-md-6">
+              <label class="form-label fw-semibold small text-uppercase text-secondary">Fecha</label>
+              <input type="date" class="form-control" th:field="*{fecha}" />
+              <div class="text-danger small mt-1" th:if="${#fields.hasErrors('fecha')}" th:errors="*{fecha}"></div>
+            </div>
+            <div class="col-12 col-md-6">
+              <label class="form-label fw-semibold small text-uppercase text-secondary">Hora seleccionada</label>
+              <input type="text" class="form-control" th:field="*{hora}" id="horaReserva" readonly />
+              <div class="text-danger small mt-1" th:if="${#fields.hasErrors('hora')}" th:errors="*{hora}"></div>
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <label class="form-label fw-semibold small text-uppercase text-secondary">Horario de reserva</label>
+            <div class="mb-3">
+              <p class="text-muted small mb-2"><i class="bi bi-sun me-1"></i> Almuerzo</p>
+              <div class="d-flex flex-wrap gap-2 time-group">
+                <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill px-3 time-btn">12:00pm</button>
+                <button type="button" class="btn btn-sm btn-danger rounded-pill px-3 time-btn selected">1:00pm</button>
+                <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill px-3 time-btn">2:00pm</button>
+                <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill px-3 time-btn">3:00pm</button>
+              </div>
+            </div>
+            <div>
+              <p class="text-muted small mb-2"><i class="bi bi-moon me-1"></i> Cena</p>
+              <div class="d-flex flex-wrap gap-2 time-group">
+                <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill px-3 time-btn">7:00pm</button>
+                <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill px-3 time-btn">7:30pm</button>
+                <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill px-3 time-btn">8:00pm</button>
+                <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill px-3 time-btn">8:30pm</button>
+                <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill px-3 time-btn">9:00pm</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <label class="form-label fw-semibold small text-uppercase text-secondary">Numero de personas</label>
+            <div class="d-flex align-items-center gap-3 mt-2">
+              <div class="counter-box d-flex align-items-center border rounded-3 overflow-hidden">
+                <button type="button" class="btn-minus btn btn-light border-0 px-3 py-2 fw-bold fs-5">−</button>
+                <input type="number" class="form-control border-0 text-center fw-bold" style="width:80px;" th:field="*{personas}" id="personasReserva" min="1" max="20" />
+                <button type="button" class="btn-plus btn btn-light border-0 px-3 py-2 fw-bold fs-5">+</button>
+              </div>
+              <small class="text-muted">Maximo 20 personas</small>
+            </div>
+            <div class="text-danger small mt-1" th:if="${#fields.hasErrors('personas')}" th:errors="*{personas}"></div>
+          </div>
+
+          <div class="mb-4">
+            <label class="form-label fw-semibold small text-uppercase text-secondary">Datos personales</label>
+            <div class="row g-3 mt-1">
+              <div class="col-12 col-md-6">
+                <input type="text" class="form-control" th:field="*{nombre}" placeholder="Nombre completo" />
+                <div class="text-danger small mt-1" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></div>
+              </div>
+              <div class="col-12 col-md-6">
+                <input type="email" class="form-control" th:field="*{correo}" placeholder="Correo electronico" />
+                <div class="text-danger small mt-1" th:if="${#fields.hasErrors('correo')}" th:errors="*{correo}"></div>
+              </div>
+              <div class="col-12 col-md-6">
+                <input type="tel" class="form-control" th:field="*{telefono}" placeholder="Telefono" />
+                <div class="text-danger small mt-1" th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}"></div>
+              </div>
+
+              <div class="col-12 col-md-6">
+                <select class="form-select" th:field="*{motivo}">
+                  <option value="">Motivo de la visita (Opcional)</option>
+                  <option value="Cumpleaños">Cumpleaños</option>
+                  <option value="Aniversario">Aniversario</option>
+                  <option value="Reunion de negocios">Reunion de negocios</option>
+                  <option value="Reunion familiar">Reunion familiar</option>
+                  <option value="Otro">Otro</option>
+                </select>
+                <div class="text-danger small mt-1" th:if="${#fields.hasErrors('motivo')}" th:errors="*{motivo}"></div>
+              </div>
+              <div class="col-12">
+                <textarea class="form-control" rows="3" th:field="*{comentario}" placeholder="¿Alguna solicitud especial?"></textarea>
+                <div class="text-danger small mt-1" th:if="${#fields.hasErrors('comentario')}" th:errors="*{comentario}"></div>
+              </div>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-danger btn-lg fw-bold w-100 py-3">Confirmar Reserva <i class="bi bi-check-circle ms-2"></i></button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

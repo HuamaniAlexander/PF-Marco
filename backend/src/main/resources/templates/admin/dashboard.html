@@ -1,0 +1,226 @@
+﻿<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/layout :: head('Dashboard Admin')}"></head>
+
+<body>
+  <div th:replace="~{fragments/layout :: navbar('admin')}"></div>
+
+  <section class="admin-hero py-5">
+    <div class="container">
+      <div class="row align-items-center g-4">
+        <div class="col-lg-8">
+          <span class="badge bg-warning text-dark rounded-pill px-3 py-2 mb-3">
+            <i class="bi bi-diagram-3"></i> Operación interna
+          </span>
+          <h1 class="display-5 fw-bold text-white mb-2">Panel de roles</h1>
+          <p class="text-white-50 fs-5 mb-0">Mozo, cocina, caja y administración organizados por módulos de trabajo.</p>
+        </div>
+        <div class="col-lg-4 text-lg-end">
+          <a th:href="@{/carta}" class="btn btn-light fw-semibold">
+            <i class="bi bi-eye me-1"></i> Ver sitio
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <main class="container py-5">
+    <div th:if="${mensajeAdmin}" class="alert alert-success rounded-4 shadow-sm" th:text="${mensajeAdmin}"></div>
+
+    <section id="resumen" class="row g-4 mb-4">
+      <div class="col-12 col-md-6 col-xl-3">
+        <div class="admin-stat-card">
+          <div class="admin-stat-icon bg-danger-subtle text-danger"><i class="bi bi-box-seam"></i></div>
+          <div><span>Productos</span><strong th:text="${totalProductos}">0</strong></div>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-xl-3">
+        <div class="admin-stat-card">
+          <div class="admin-stat-icon bg-warning-subtle text-warning"><i class="bi bi-calendar-check"></i></div>
+          <div><span>Reservas</span><strong th:text="${totalReservas}">0</strong></div>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-xl-3">
+        <div class="admin-stat-card">
+          <div class="admin-stat-icon bg-success-subtle text-success"><i class="bi bi-receipt"></i></div>
+          <div><span>Ventas</span><strong th:text="${totalVentas}">0</strong></div>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-xl-3">
+        <div class="admin-stat-card">
+          <div class="admin-stat-icon bg-primary-subtle text-primary"><i class="bi bi-cash-coin"></i></div>
+          <div><span>Ingresos pagados</span><strong th:text="'S/ ' + ${#numbers.formatDecimal(ingresos, 1, 2)}">S/ 0.00</strong></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="admin-section mb-4">
+      <div class="admin-section-header">
+        <div>
+          <span class="text-danger fw-semibold">Flujo operativo</span>
+          <h2>Cómo trabajan los roles</h2>
+        </div>
+      </div>
+      <div class="role-flow d-flex flex-column flex-lg-row align-items-lg-center gap-3">
+        <div><i class="bi bi-person-workspace"></i><strong>Mozo</strong><span>Registra pedido</span></div>
+        <i class="bi bi-arrow-right d-none d-lg-block text-danger"></i>
+        <div><i class="bi bi-fire"></i><strong>Cocinero</strong><span>Prepara comanda</span></div>
+        <i class="bi bi-arrow-right d-none d-lg-block text-danger"></i>
+        <div><i class="bi bi-check2-circle"></i><strong>Mozo</strong><span>Entrega pedido</span></div>
+        <i class="bi bi-arrow-right d-none d-lg-block text-danger"></i>
+        <div><i class="bi bi-cash-register"></i><strong>Cajero</strong><span>Cobra y cierra mesa</span></div>
+        <i class="bi bi-arrow-right d-none d-lg-block text-danger"></i>
+        <div><i class="bi bi-shield-check"></i><strong>Admin</strong><span>Supervisa todo</span></div>
+      </div>
+    </section>
+
+    <ul class="nav nav-pills admin-role-tabs mb-4" id="adminRoleTabs" role="tablist">
+      <li class="nav-item" role="presentation"><button class="nav-link active" data-bs-toggle="pill" data-bs-target="#rol-mozo" type="button">Mozo</button></li>
+      <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#rol-cocinero" type="button">Cocinero</button></li>
+      <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#rol-cajero" type="button">Cajero</button></li>
+      <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#rol-admin" type="button">Administrador</button></li>
+    </ul>
+
+    <div class="tab-content">
+      <section class="tab-pane fade show active" id="rol-mozo">
+        <div class="admin-section mb-4">
+          <div class="admin-section-header">
+            <div><span class="text-danger fw-semibold">Atención de salón</span><h2>Mozo</h2></div>
+            <button type="button" class="btn btn-outline-danger btn-sm" onclick="dashboardOps.resetDemo()"><i class="bi bi-arrow-clockwise me-1"></i> Reiniciar operación</button>
+          </div>
+          <div class="row g-4">
+            <div class="col-xl-4">
+              <div class="ops-panel h-100">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <div><h4 class="mb-0">Mesas</h4><small class="text-muted">Selecciona una mesa para atender.</small></div>
+                  <span class="badge bg-danger-subtle text-danger" id="opsMesaSeleccionada">Sin mesa</span>
+                </div>
+                <div class="ops-table-grid" id="opsMesas"></div>
+                <div class="row g-2 mt-3">
+                  <div class="col-6">
+                    <label class="form-label small fw-semibold">Clientes</label>
+                    <input type="number" min="1" max="20" class="form-control" id="opsClientes" value="2">
+                  </div>
+                  <div class="col-6 d-flex align-items-end">
+                    <button class="btn btn-danger w-100" type="button" onclick="dashboardOps.abrirMesa()">Abrir mesa</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-5">
+              <div class="ops-panel h-100">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <div><h4 class="mb-0">Tomar pedido</h4><small class="text-muted">Busca productos reales de la carta.</small></div>
+                  <span class="fw-bold text-danger" id="opsOrdenTotal">S/ 0.00</span>
+                </div>
+                <div class="input-icon-group mb-3">
+                  <i class="bi bi-search"></i>
+                  <input class="form-control form-control-lg" id="opsBuscarProducto" placeholder="Buscar pollo, parrilla, bebida...">
+                </div>
+                <div class="ops-product-list mb-3" id="opsProductos"></div>
+                <label class="form-label small fw-semibold">Observaciones para cocina</label>
+                <textarea class="form-control" id="opsObservaciones" rows="2" placeholder="Ej. sin mayonesa, papas extra, término 3/4"></textarea>
+              </div>
+            </div>
+            <div class="col-xl-3">
+              <div class="ops-panel h-100">
+                <h4>Orden actual</h4>
+                <div id="opsOrdenActual" class="ops-current-order my-3"></div>
+                <button class="btn btn-danger w-100 mb-2" type="button" onclick="dashboardOps.enviarCocina()"><i class="bi bi-send-check me-1"></i> Enviar a cocina</button>
+                <button class="btn btn-outline-secondary w-100" type="button" onclick="dashboardOps.solicitarCuenta()"><i class="bi bi-receipt me-1"></i> Solicitar cuenta</button>
+              </div>
+            </div>
+          </div>
+          <div class="table-responsive mt-4">
+            <table class="table align-middle mb-0">
+              <thead><tr><th>Mesa</th><th>Estado</th><th>Clientes</th><th>Pedido</th><th>Total</th><th class="text-end">Acciones</th></tr></thead>
+              <tbody id="opsTablaMesas"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section class="tab-pane fade" id="rol-cocinero">
+        <div class="admin-section mb-4">
+          <div class="admin-section-header"><div><span class="text-danger fw-semibold">Producción</span><h2>Cocinero</h2></div><button class="btn btn-outline-warning btn-sm" type="button" onclick="dashboardOps.reportarDemora()"><i class="bi bi-clock-history me-1"></i> Reportar demora</button></div>
+          <div class="row g-4">
+            <div class="col-lg-4"><div class="kitchen-column"><h4>Pendiente</h4><div id="kitchenPendiente"></div></div></div>
+            <div class="col-lg-4"><div class="kitchen-column"><h4>En preparación</h4><div id="kitchenPreparacion"></div></div></div>
+            <div class="col-lg-4"><div class="kitchen-column"><h4>Listo</h4><div id="kitchenListo"></div></div></div>
+          </div>
+          <div class="mt-4">
+            <label class="form-label fw-semibold">Producto agotado</label>
+            <div class="input-group">
+              <input class="form-control" id="opsAgotado" placeholder="Ej. Gaseosa 1.5L">
+              <button class="btn btn-outline-danger" type="button" onclick="dashboardOps.reportarAgotado()">Reportar agotado</button>
+            </div>
+            <div class="small text-muted mt-2" id="opsAlertasCocina">Sin alertas registradas.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="tab-pane fade" id="rol-cajero">
+        <div class="admin-section mb-4">
+          <div class="admin-section-header"><div><span class="text-danger fw-semibold">Pagos y caja</span><h2>Cajero</h2></div><button class="btn btn-danger btn-sm" type="button" onclick="dashboardOps.toggleCaja()" id="opsCajaBtn">Abrir caja</button></div>
+          <div class="row g-4">
+            <div class="col-md-4"><div class="admin-stat-card"><div class="admin-stat-icon bg-success-subtle text-success"><i class="bi bi-cash-stack"></i></div><div><span>Estado caja</span><strong id="opsCajaEstado">Cerrada</strong></div></div></div>
+            <div class="col-md-4"><div class="admin-stat-card"><div class="admin-stat-icon bg-warning-subtle text-warning"><i class="bi bi-hourglass-split"></i></div><div><span>Pendientes</span><strong id="opsPendientesPago">0</strong></div></div></div>
+            <div class="col-md-4"><div class="admin-stat-card"><div class="admin-stat-icon bg-danger-subtle text-danger"><i class="bi bi-cash-coin"></i></div><div><span>Turno</span><strong id="opsVentasTurno">S/ 0.00</strong></div></div></div>
+          </div>
+          <div class="table-responsive mt-4">
+            <table class="table align-middle mb-0">
+              <thead><tr><th>Mesa</th><th>Consumo</th><th>Método</th><th>Descuento</th><th class="text-end">Acciones</th></tr></thead>
+              <tbody id="cashierCuentas"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section class="tab-pane fade" id="rol-admin">
+        <div class="row g-4">
+          <aside class="col-lg-3">
+            <div class="admin-sidebar rounded-4 shadow-sm p-3 sticky-lg-top">
+              <a href="#productos" class="admin-nav-link"><i class="bi bi-box-seam me-2"></i>Productos</a>
+              <a href="#reservas" class="admin-nav-link"><i class="bi bi-calendar-check me-2"></i>Reservas</a>
+              <a href="#ventas" class="admin-nav-link"><i class="bi bi-receipt me-2"></i>Ventas</a>
+              <a href="#admin-extra" class="admin-nav-link"><i class="bi bi-sliders me-2"></i>Control del sistema</a>
+            </div>
+          </aside>
+
+          <div class="col-lg-9">
+            <section id="productos" class="admin-section mb-4">
+              <div class="admin-section-header"><div><span class="text-danger fw-semibold">Catálogo</span><h2 th:text="${esEditar} ? 'Editar producto' : 'Nuevo producto'">Nuevo producto</h2></div><a th:href="@{/admin/productos/nuevo}" class="btn btn-outline-danger btn-sm"><i class="bi bi-plus-circle me-1"></i> Limpiar formulario</a></div>
+              <form th:action="${esEditar} ? @{/admin/productos/editar} : @{/admin/productos/nuevo}" th:object="${producto}" method="post" class="row g-3">
+                <input type="hidden" th:field="*{id}"><div class="col-md-6"><label class="form-label fw-semibold">Nombre</label><input type="text" class="form-control" th:field="*{nombre}" required></div><div class="col-md-3"><label class="form-label fw-semibold">Precio</label><input type="number" step="0.01" min="0" class="form-control" th:field="*{precio}" required></div><div class="col-md-3"><label class="form-label fw-semibold">Categoría</label><select class="form-select" th:field="*{categoria}" required><option value="">Seleccione</option><option value="Pollos">Pollos</option><option value="Parrillas">Parrillas</option><option value="Bebidas">Bebidas</option><option value="Promociones">Promociones</option></select></div><div class="col-12"><label class="form-label fw-semibold">Descripción</label><textarea class="form-control" rows="3" th:field="*{descripcion}" required></textarea></div><div class="col-12"><label class="form-label fw-semibold">URL de imagen</label><input type="url" class="form-control" th:field="*{imagenUrl}"></div><div class="col-12 d-flex gap-2"><button type="submit" class="btn btn-danger fw-semibold"><i class="bi bi-check-circle me-1"></i><span th:text="${esEditar} ? 'Actualizar producto' : 'Guardar producto'">Guardar producto</span></button><a th:href="@{/admin/dashboard#productos}" class="btn btn-outline-secondary">Cancelar</a></div>
+              </form>
+            </section>
+
+            <section class="admin-section mb-4"><div class="admin-section-header"><div><span class="text-danger fw-semibold">Inventario</span><h2>Productos registrados</h2></div></div><div class="table-responsive"><table class="table table-hover align-middle mb-0"><thead><tr><th>Producto</th><th>Categoría</th><th>Precio</th><th class="text-end">Acciones</th></tr></thead><tbody><tr th:each="p : ${productos}"><td><div class="d-flex align-items-center gap-3"><img th:src="${p.imagenUrl}" th:alt="${p.nombre}" class="admin-table-img"><div><div class="fw-bold" th:text="${p.nombre}">Producto</div><small class="text-muted" th:text="${#strings.abbreviate(p.descripcion, 70)}">Descripción</small></div></div></td><td><span class="badge bg-light text-danger border" th:text="${p.categoria}">Categoría</span></td><td class="fw-semibold" th:text="'S/ ' + ${#numbers.formatDecimal(p.precio, 1, 2)}">S/ 0.00</td><td class="text-end"><a th:href="@{/admin/productos/editar/{id}(id=${p.id})}" class="btn btn-sm btn-outline-warning"><i class="bi bi-pencil-square"></i></a><form th:action="@{/admin/productos/eliminar/{id}(id=${p.id})}" method="post" class="d-inline"><button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('¿Eliminar este producto?')"><i class="bi bi-trash"></i></button></form></td></tr><tr th:if="${#lists.isEmpty(productos)}"><td colspan="4" class="text-center text-muted py-4">Aún no hay productos registrados.</td></tr></tbody></table></div></section>
+
+            <section id="reservas" class="admin-section mb-4"><div class="admin-section-header"><div><span class="text-danger fw-semibold">Atención</span><h2>Reservas</h2></div></div><div class="table-responsive"><table class="table table-hover align-middle mb-0"><thead><tr><th>Cliente</th><th>Fecha</th><th>Personas</th><th>Contacto</th><th class="text-end">Acciones</th></tr></thead><tbody><tr th:each="r : ${reservas}"><td><div class="fw-bold" th:text="${r.nombre}">Cliente</div><small class="text-muted" th:text="${r.motivo}">Motivo</small></td><td><span th:text="${#temporals.format(r.fecha, 'dd/MM/yyyy')}">01/01/2026</span><small class="d-block text-muted" th:text="${r.hora}">1:00pm</small></td><td th:text="${r.personas}">2</td><td><span th:text="${r.correo}">correo</span><small class="d-block text-muted" th:text="${r.telefono}">teléfono</small></td><td class="text-end"><form th:action="@{/admin/reservas/eliminar/{id}(id=${r.id})}" method="post" class="d-inline"><button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('¿Eliminar esta reserva?')"><i class="bi bi-trash"></i></button></form></td></tr><tr th:if="${#lists.isEmpty(reservas)}"><td colspan="5" class="text-center text-muted py-4">Aún no hay reservas registradas.</td></tr></tbody></table></div></section>
+
+            <section id="ventas" class="admin-section mb-4"><div class="admin-section-header"><div><span class="text-danger fw-semibold">Pedidos</span><h2>Ventas y pagos</h2></div></div><div class="table-responsive"><table class="table table-hover align-middle mb-0"><thead><tr><th>Pedido</th><th>Cliente</th><th>Pago</th><th>Entrega</th><th class="text-end">Total</th></tr></thead><tbody><tr th:each="v : ${ventas}"><td><div class="fw-bold" th:text="'#' + ${v.id}">#1</div><small class="text-muted" th:text="${#temporals.format(v.fechaHora, 'dd/MM/yyyy HH:mm')}">fecha</small></td><td><span th:text="${v.usuarioNombre}">Cliente</span><small class="d-block text-muted" th:text="${v.usuarioCorreo}">correo</small></td><td><span class="badge bg-success-subtle text-success border" th:text="${v.estadoPago ?: 'PENDIENTE'}">PAGADO</span><small class="d-block text-muted" th:text="${v.codigoTransaccion ?: 'Sin código'}">Código</small></td><td><span th:text="${v.metodoEntrega ?: 'No definido'}">Delivery</span><small class="d-block text-muted" th:text="${v.direccionEntrega ?: 'Recojo en local'}">Dirección</small></td><td class="text-end fw-bold text-danger" th:text="'S/ ' + ${#numbers.formatDecimal(v.total, 1, 2)}">S/ 0.00</td></tr><tr th:if="${#lists.isEmpty(ventas)}"><td colspan="5" class="text-center text-muted py-4">Aún no hay ventas registradas.</td></tr></tbody></table></div></section>
+
+            <section id="admin-extra" class="admin-section"><div class="admin-section-header"><div><span class="text-danger fw-semibold">Control del sistema</span><h2>Administrador</h2></div></div><div class="row g-3"><div class="col-md-4"><div class="role-card"><i class="bi bi-tags"></i><h4>Categorías y promociones</h4><p>Gestionar categorías, precios y campañas.</p></div></div><div class="col-md-4"><div class="role-card"><i class="bi bi-people"></i><h4>Usuarios y roles</h4><p>Administrar accesos de mozos, cocina, caja y admin.</p></div></div><div class="col-md-4"><div class="role-card"><i class="bi bi-bar-chart"></i><h4>Reportes e inventario</h4><p>Revisar ventas, caja, stock y autorizaciones.</p></div></div></div></section>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <div class="d-none" id="dashboardProductSource">
+    <div th:each="p : ${productos}" class="dashboard-product-source"
+         th:data-id="${p.id}" th:data-nombre="${p.nombre}" th:data-categoria="${p.categoria}"
+         th:data-precio="${p.precio}" th:data-imagen="${p.imagenUrl}"></div>
+  </div>
+
+  <div th:replace="~{fragments/layout :: footer}"></div>
+  <script th:inline="javascript">
+    window.dashboardInitialSection = /*[[${seccionActiva}]]*/ 'resumen';
+    window.dashboardEditingProduct = /*[[${esEditar}]]*/ false;
+  </script>
+  <script th:src="@{/js/admin-dashboard.js}"></script>
+</body>
+
+</html>
