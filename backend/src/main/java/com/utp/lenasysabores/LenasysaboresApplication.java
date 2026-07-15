@@ -8,6 +8,7 @@ public class LenasysaboresApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(LenasysaboresApplication.class, args);
+		
 	}
 
 }
