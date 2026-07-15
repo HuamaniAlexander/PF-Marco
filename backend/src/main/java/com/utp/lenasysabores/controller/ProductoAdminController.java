@@ -29,7 +29,10 @@ public class ProductoAdminController {
             return "redirect:/";
         }
 
-        return "redirect:/admin/productos/nuevo";
+        model.addAttribute("producto", new Producto());
+        model.addAttribute("esEditar", false);
+
+        return "producto-form";
     }
 
     @PostMapping("/nuevo")
@@ -41,7 +44,7 @@ public class ProductoAdminController {
         }
 
         catalogoService.guardarProducto(producto);
-        return "redirect:/admin/dashboard#productos";
+        return "redirect:/carta";
     }
 
     @GetMapping("/editar/{id}")
@@ -50,7 +53,11 @@ public class ProductoAdminController {
 
         if (!esAdmin(session)) {return "redirect:/";}
 
-        return "redirect:/admin/productos/editar/" + id;
+        Producto producto = catalogoService.obtenerProductoPorId(id);
+        model.addAttribute("producto", producto);
+        model.addAttribute("esEditar", true);
+
+        return "producto-form";
     }
 
     @PostMapping("/editar")
@@ -60,7 +67,7 @@ public class ProductoAdminController {
         if (!esAdmin(session)) {return "redirect:/";}
 
         catalogoService.guardarProducto(producto);
-        return "redirect:/admin/dashboard#productos";
+        return "redirect:/carta";
     }
 
     @PostMapping("/eliminar/{id}")
@@ -69,7 +76,7 @@ public class ProductoAdminController {
         if (!esAdmin(session)) {return "redirect:/";}
 
         catalogoService.eliminarProducto(id);
-        return "redirect:/admin/dashboard#productos";
+        return "redirect:/carta";
     }
     private boolean esAdmin(HttpSession session) {
         String rol = (String) session.getAttribute("usuarioRol");

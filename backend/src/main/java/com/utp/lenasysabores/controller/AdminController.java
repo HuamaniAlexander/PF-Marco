@@ -36,11 +36,7 @@ public class AdminController {
             return "redirect:/";
         }
 
-        cargarDatosDashboard(model);
-        model.addAttribute("producto", new Producto());
-        model.addAttribute("esEditar", false);
-        model.addAttribute("seccionActiva", "resumen");
-        return "admin/dashboard";
+        return "redirect:/productos/nuevo";
     }
 
     @GetMapping("/productos/nuevo")
@@ -49,11 +45,7 @@ public class AdminController {
             return "redirect:/";
         }
 
-        cargarDatosDashboard(model);
-        model.addAttribute("producto", new Producto());
-        model.addAttribute("esEditar", false);
-        model.addAttribute("seccionActiva", "productos");
-        return "admin/dashboard";
+        return "redirect:/productos/nuevo";
     }
 
     @PostMapping("/productos/nuevo")
@@ -77,11 +69,7 @@ public class AdminController {
             return "redirect:/";
         }
 
-        cargarDatosDashboard(model);
-        model.addAttribute("producto", catalogoService.obtenerProductoPorId(id));
-        model.addAttribute("esEditar", true);
-        model.addAttribute("seccionActiva", "productos");
-        return "admin/dashboard";
+        return "redirect:/productos/editar/" + id;
     }
 
     @PostMapping("/productos/editar")

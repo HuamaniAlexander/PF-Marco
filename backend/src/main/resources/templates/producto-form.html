@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/layout :: head(${producto.id != null} ? 'Editar Producto' : 'Agregar Producto')}"></head>
+
+<body>
+
+    <div th:replace="~{fragments/layout :: navbar('admin')}"></div>
+
+    <section class="page-hero d-flex align-items-center text-center py-5">
+        <img src="https://images.unsplash.com/photo-1556740749-887f6717d7e4?w=1600&q=85" alt="admin" />
+        <div class="container page-hero-content">
+            <span class="badge bg-warning text-dark rounded-pill px-3 py-2 mb-3">
+                <i class="bi bi-box-seam"></i> Administración
+            </span>
+
+            <h1 class="display-4 fw-bold text-white"
+                th:text="${producto.id != null} ? 'Editar Producto' : 'Agregar Producto'">
+                Agregar Producto
+            </h1>
+
+            <p class="text-white-50 fs-5"
+                th:text="${producto.id != null} ? 'Modifica los datos del producto seleccionado.' : 'Registra nuevos productos para la carta.'">
+                Registra nuevos productos para la carta.
+            </p>
+        </div>
+    </section>
+
+    <section class="py-5">
+        <div class="container">
+
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+
+                    <div class="card border-0 shadow-sm rounded-4">
+                        <div class="card-body p-4 p-md-5">
+
+                            <form th:action="${esEditar} ? @{/productos/editar} : @{/productos/nuevo}"
+                                th:object="${producto}" method="post">
+
+                                <input type="hidden" th:field="*{id}" />
+
+                                <div class="mb-4">
+                                    <label class="form-label fw-semibold">Nombre</label>
+                                    <input type="text" class="form-control form-control-lg" th:field="*{nombre}">
+                                </div>
+
+                                <div class="mb-4">
+                                    <label class="form-label fw-semibold">Descripción</label>
+                                    <textarea class="form-control" rows="4" th:field="*{descripcion}"></textarea>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-4">
+                                        <label class="form-label fw-semibold">Precio</label>
+                                        <input type="number" step="0.01" min="0" class="form-control" th:field="*{precio}">
+                                    </div>
+
+                                    <div class="col-md-6 mb-4">
+                                        <label class="form-label fw-semibold">Categoría</label>
+                                        <select class="form-select" th:field="*{categoria}">
+                                            <option value="">Seleccione</option>
+                                            <option value="Pollos">Pollos</option>
+                                            <option value="Parrillas">Parrillas</option>
+                                            <option value="Bebidas">Bebidas</option>
+                                            <option value="Promociones">Promociones</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label class="form-label fw-semibold">URL de Imagen</label>
+                                    <input type="url" class="form-control" th:field="*{imagenUrl}">
+                                </div>
+
+                                <div class="d-flex gap-3">
+                                    <button type="submit" class="btn btn-danger px-4">
+                                        <i class="bi bi-check-circle"></i>
+                                        <span th:text="${esEditar} ? 'Actualizar Producto' : 'Guardar Producto'">Guardar</span>
+                                    </button>
+
+                                    <a th:href="@{/carta}" class="btn btn-outline-secondary">Cancelar</a>
+                                </div>
+
+                            </form>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <div th:replace="~{fragments/layout :: footer}"></div>
+
+</body>
+
+</html>
